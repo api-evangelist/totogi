@@ -1,0 +1,332 @@
+aid: totogi
+name: Totogi
+review:
+  question: Does Totogi publish a real, self-serve public developer portal with
+    downloadable OpenAPI, and what is its CAMARA / Open Gateway posture?
+  answer: partial
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: network-vendor-bss
+  gated: true
+  portalConfirmed: false
+  openapiHarvested: false
+  specsCount: 0
+findings:
+  summary: |
+    Totogi LLC (Austin, Texas) is a vertical-AI BSS/OSS software vendor selling to
+    communications service providers, not to developers. Its surface is split in
+    two and both halves matter.
+
+    The FIRST-PARTY PLATFORM DOCS ARE A LOGIN WALL. Totogi's API reference lives on
+    a Redocly-hosted portal at https://docs.totogi.solutions, which returns HTTP 200
+    with a "Log in with Redocly" page to any anonymous visitor. Every path probed on
+    that host (/openapi.yaml, /openapi.json, /spec, /reference, /catalog, /apis,
+    /docs, /sitemap.xml, /robots.txt) returns the same ~17KB login HTML, so there is
+    no public specification, no endpoint list, and no base URL to harvest. The
+    marketing site itself has no developer section: developer., developers., docs.,
+    api., console., dev., sandbox., charging., apidocs. under totogi.com all fail to
+    resolve (curl 000); /developer, /api, /docs return 404; /developers returns 200
+    only because WordPress serves the homepage as a soft-404. The page sitemap lists
+    twelve pages, none of them developer-facing.
+
+    ONE REAL PUBLIC DEVELOPER SURFACE EXISTS: WHOOSH. Whoosh! is Totogi's A2P
+    messaging API, launched 5 September 2023 and explicitly marketed as a
+    "plug-and-play replacement for Twilio APIs" that operators resell so the traffic
+    and margin stay on their own network. Its documentation at
+    https://docs.whoosh.totogi.solutions is public and un-gated (HTTP 200, Vue SPA,
+    last modified 2023-08-31), the API host https://api.whoosh.totogi.solutions is
+    live (returns application/json 404s from API Gateway rather than HTML), and the
+    documented base path is
+    https://api.whoosh.totogi.solutions/2010-04-01/Accounts/{AccountSid}/ with
+    POST .../Messages.json taking To, From, and Body. The 2010-04-01 versioning, the
+    Account SID / Auth Token model, and even the TWILIO_ACCOUNT_SID environment
+    variable names in the SDKs are carried straight over from Twilio by design.
+    Credentials are issued from https://console.whoosh.totogi.solutions, which is a
+    login-only console — there is no self-serve signup anywhere, so gated is true and
+    portalConfirmed is false even though the docs themselves are open.
+
+    NO OPENAPI WAS FOUND ANYWHERE. Every candidate path was probed on the docs host,
+    the API host, and the Redocly portal and none returned a parseable spec. The
+    openapi/ directory is therefore omitted from this repo rather than filled with
+    anything invented.
+
+    NOT A CPAAS AGGREGATOR AND NOT AN OPERATOR. Totogi is the third shape in the
+    telecom split: a BSS/OSS vendor that certifies against telecom standards and
+    reaches developers only through its operator customers.
+  camara:
+    posture: >-
+      No CAMARA reference found. Zero mentions of CAMARA, GSMA Open Gateway, or
+      Aduna across Totogi's own canonical AI index — llms.txt, llms-full.txt,
+      facts.json, evidence.json, glossary.json, and case-studies.json — or anywhere
+      on the marketing site. Totogi's telecom standards alignment is entirely TM
+      Forum and 3GPP, not CAMARA. This is not even a press-release-only posture;
+      there is no press release either.
+    apis: []
+    openGatewayMember: false
+    adunaChannel: false
+    cpaasChannelPartner: false
+    ciba: false
+    note: |
+      Totogi's glossary.json does define "Network Exposure Function (NEF)" as "a 5G
+      core network function that exposes network capabilities and events to external
+      applications via APIs," but that is a definitional glossary entry scoped to the
+      charging product, not a claim that Totogi operates or exposes a NEF. No
+      network-API productization, no CAMARA API family, and no CIBA or OIDC
+      network-authorization flow appears in any Totogi material. Totogi does publish
+      a blog post on network-slicing monetization and a video titled "Monetize
+      network APIs," but both are about charging for network APIs, not about
+      implementing CAMARA ones.
+  tmForum:
+    conformanceCertified: true
+    level: Platinum Open API Conformance Certification
+    certifiedApiCount: 31
+    leaderboardClaim: >-
+      Totogi announced #1 ranking on TM Forum's Open API Certification Leaderboard on
+      13 September 2021, reaching Platinum (20+ conformant Open APIs) in four months
+      from its first certification in June 2021, and on 22 September 2021 announced
+      nine additional certified Open APIs bringing the total to 31. TM Forum CTO
+      George Glass is quoted in the release. Totogi was then one of only two
+      companies at Platinum.
+    specificTmfNumbersPublished: false
+    note: |
+      Totogi does NOT publish the individual TMF numbers (TMF620, TMF622, TMF641,
+      etc.) it is certified against on its own site, only the aggregate count of 31
+      and the Platinum level. The TM Forum conformance directory at
+      https://www.tmforum.org/conformance-certification/open-api-conformance/ — which
+      Totogi links from its own site footer as a certification badge — returned HTTP
+      403 to anonymous programmatic fetch on the review date, so the per-API list
+      could not be independently enumerated. Certification is real and attested by
+      TM Forum; the itemized list is simply not public from either side without a
+      browser session.
+    relatedCapability: >-
+      Totogi sells TM Forum certification acceleration as a product outcome. A
+      published case study describes CloudSense, a CPQ platform used by 60+ telecom
+      providers, using the Totogi Ontology to certify 13 TM Forum Open APIs in 30
+      days instead of an estimated 26 months.
+  threeGpp:
+    nefOrScef: false
+    fiveGCharging: true
+    networkSlicingApi: false
+    edgeMec: false
+    note: |
+      Totogi Charging-as-a-Service is a 5G Standalone / 5G Advanced converged
+      charging system with built-in policy control, documented as integrating with
+      external policy over the 4G/5G NSA Sy interface (PCRF) and the 5G SA N28
+      interface (PCF). These are 3GPP network interfaces, not public developer APIs.
+      Separately, github.com/totogi/5GC_APIs is a FORK of jdegre/5GC_APIs, the
+      well-known community mirror of 3GPP-published 5G Core OpenAPI files
+      (TS29122_*, TS26512_*, TS24558_* and others). Those specs are 3GPP's work, not
+      Totogi's, and are deliberately NOT harvested into this repo as Totogi
+      artifacts. The fork is evidence of interest in 3GPP exposure, nothing more.
+  auth:
+    scheme: HTTP Basic
+    detail: >-
+      Whoosh authenticates with HTTP Basic using an Account SID as the username and
+      an Auth Token as the password, issued from console.whoosh.totogi.solutions —
+      the Twilio credential model reproduced exactly, down to the TWILIO_ACCOUNT_SID
+      and TWILIO_AUTH_TOKEN environment variable names the SDKs read.
+    oauth2: false
+    oidc: false
+    ciba: false
+    mtls: false
+    wellKnownProbed:
+    - url: https://api.whoosh.totogi.solutions/.well-known/openid-configuration
+      status: 404
+    - url: https://console.whoosh.totogi.solutions/.well-known/openid-configuration
+      status: 404
+    - url: https://totogi.com/.well-known/openid-configuration
+      status: 404
+    - url: https://api.whoosh.totogi.solutions/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://totogi.com/.well-known/oauth-authorization-server
+      status: 404
+  webhooks:
+    present: true
+    mechanism: StatusCallback
+    detail: >-
+      Passing a StatusCallback URL on the send-message call tells Whoosh where to
+      POST message status changes. Documented statuses are queued, failed, sent,
+      delivered, and undelivered. The documented callback payload carries SmsSid,
+      SmsStatus, MessageStatus, To, MessageSid, AccountSid, From, and ApiVersion.
+    asyncapiPublished: false
+  sdks:
+  - language: Node.js
+    package: whoosh-sms
+    registry: npm
+    version: 0.1.4
+    url: https://www.npmjs.com/package/whoosh-sms
+    note: Published by nikhil.mathugar@totogi.com; repo github.com/totogi/whoosh-node
+      now returns 404.
+  - language: Python
+    package: WhooshSms
+    registry: PyPI
+    version: 0.1.4
+    url: https://pypi.org/project/WhooshSms/
+    note: Author Totogi, help@totogi.com; repo github.com/totogi/whoosh-python.
+  - language: Ruby
+    package: whoosh-ruby
+    registry: RubyGems
+    version: 0.1.5
+    url: https://rubygems.org/gems/whoosh-ruby
+    note: '"The official library for communicating with the Whoosh REST API."'
+  - language: Java
+    package: whoosh-0.1.0-jar-with-dependencies.jar
+    registry: GitHub Releases
+    url: https://github.com/totogi/whoosh-java-releases
+    note: Standalone JAR, no Maven Central coordinate found.
+  graphql:
+    found: false
+  grpc:
+    found: false
+  postman:
+    found: false
+  agentReadiness:
+    llmsTxt: true
+    note: |
+      Totogi publishes an unusually complete agent-facing content layer that is worth
+      recording even though none of it is an API: llms.txt, llms-full.txt, and four
+      canonical JSON documents linked from the site footer as "AI Index" —
+      facts.json, evidence.json, glossary.json, and case-studies.json. robots.txt
+      explicitly grants full access to GPTBot, ChatGPT-User, CCBot, PerplexityBot,
+      AnthropicAI, ClaudeBot, and Applebot while restricting traditional search
+      crawlers from /product-updates/. A telecom vendor that machine-readably
+      publishes its own facts and evidence but keeps its API reference behind a
+      Redocly login is a precise illustration of the sector split.
+transports:
+- protocol: REST
+  scheme: https
+  baseURL: https://api.whoosh.totogi.solutions/2010-04-01/Accounts/
+  documented: true
+  note: Whoosh Programmable Messaging. Twilio-compatible 2010-04-01 resource shape.
+- protocol: Webhook
+  scheme: https
+  documented: true
+  note: StatusCallback POST from Whoosh to a subscriber-supplied URL.
+- protocol: GraphQL
+  documented: false
+  note: No GraphQL surface found on any Totogi host.
+- protocol: gRPC
+  documented: false
+  note: No published .proto found.
+- protocol: WebSocket
+  scheme: wss
+  documented: false
+  note: No WebSocket endpoint documented.
+probes:
+- url: https://totogi.com
+  status: 200
+  note: Marketing site (WordPress). No developer navigation.
+- url: https://www.totogi.com/developers
+  status: 200
+  note: Soft 404 — WordPress serves the homepage. Not a developer page.
+- url: https://www.totogi.com/developer
+  status: 404
+- url: https://www.totogi.com/api
+  status: 404
+- url: https://www.totogi.com/docs
+  status: 404
+- url: https://developer.totogi.com
+  status: 0
+  note: DNS does not resolve.
+- url: https://developers.totogi.com
+  status: 0
+  note: DNS does not resolve.
+- url: https://docs.totogi.com
+  status: 0
+  note: DNS does not resolve.
+- url: https://api.totogi.com
+  status: 0
+  note: DNS does not resolve.
+- url: https://console.totogi.com
+  status: 0
+- url: https://sandbox.totogi.com
+  status: 0
+- url: https://docs.totogi.solutions
+  status: 200
+  note: Redocly-hosted API reference portal — "Log in with Redocly" wall. Every path
+    returns the same login HTML. LOGIN WALL, not a portal.
+- url: https://totogi.solutions
+  status: 200
+  note: Totogi PlanAI single-page application. Login app, no public docs.
+- url: https://docs.whoosh.totogi.solutions
+  status: 200
+  note: PUBLIC Whoosh documentation SPA. Redirected here (301) from
+    docs.whoosh.totogidemos.com.
+- url: https://console.whoosh.totogi.solutions
+  status: 200
+  note: Whoosh console — login only, no self-serve signup.
+- url: https://api.whoosh.totogi.solutions/2010-04-01/Accounts/
+  status: 404
+  note: Live API host, returns application/json (API Gateway), confirming a real
+    unauthenticated-rejecting API rather than a parked domain.
+- url: https://docs.whoosh.totogi.solutions/openapi.json
+  status: 404
+- url: https://docs.whoosh.totogi.solutions/swagger.json
+  status: 404
+- url: https://docs.whoosh.totogi.solutions/api-docs
+  status: 404
+- url: https://api.whoosh.totogi.solutions/openapi.json
+  status: 404
+- url: https://api.whoosh.totogi.solutions/swagger.json
+  status: 404
+- url: https://docs.totogi.solutions/openapi.yaml
+  status: 200
+  note: Returns the Redocly login page, NOT a specification. Does not parse as
+    OpenAPI.
+- url: https://www.tmforum.org/conformance-certification/open-api-conformance/
+  status: 403
+  note: TM Forum blocks anonymous programmatic fetch; per-API certification list not
+    independently enumerable.
+sources:
+- url: https://totogi.com/facts.json
+  type: Facts
+  note: Canonical org facts — Totogi LLC, Austin TX, products, contact, profiles.
+    Fetched 2026-07-25.
+- url: https://totogi.com/llms.txt
+  type: LLMsTxt
+  note: Canonical discovery map. Fetched 2026-07-25.
+- url: https://totogi.com/glossary.json
+  type: Glossary
+  note: Source for the NEF, PCF, TM Forum Open APIs, ODA, 3GPP, and 5G SA entries
+    quoted above. No CAMARA entry exists. Fetched 2026-07-25.
+- url: https://totogi.com/newsroom/press-releases/totogi-achieves-1-ranking-in-record-time-on-tm-forum-open-api-certification-leaderboard/
+  type: Announcement
+  note: Platinum certification, #1 leaderboard, 13 September 2021.
+- url: https://totogi.com/newsroom/press-releases/totogi-adds-support-for-nine-additional-tm-forum-open-apis-solidifying-rank-as-1-vendor-on-certification-leaderboard/
+  type: Announcement
+  note: Nine additional certified Open APIs, total 31, 22 September 2021.
+- url: https://totogi.com/newsroom/press-releases/replacement-for-twilio-a2p-apis-for-network-operators/
+  type: Announcement
+  note: Whoosh! launch, 5 September 2023 — "plug-and-play replacement for Twilio
+    APIs" sold through operators.
+- url: https://totogi.com/ai-native-charging/
+  type: Documentation
+  note: Charging-as-a-Service — 5G SA/5G Advanced, Sy (PCRF) and N28 (PCF)
+    integration, single account management API.
+- url: https://docs.whoosh.totogi.solutions
+  type: Documentation
+  note: Whoosh quickstarts, base path, StatusCallback webhook, SDK list. Content
+    read from the application bundle at /js/app.517d6eea.js.
+- url: https://totogi.com/resources/case-studies/accelerating-tmf-api-certification-with-bss-magic/
+  type: CaseStudy
+  note: CloudSense certified 13 TM Forum Open APIs in 30 days using the Totogi
+    Ontology.
+- url: https://github.com/totogi
+  type: GitHubOrganization
+  note: 12 public repos. 5GC_APIs is a fork of jdegre/5GC_APIs (3GPP specs, not
+    Totogi's). whoosh-node and whoosh-python now 404.
+actions:
+  openapiDirectoryCreated: false
+  reason: |
+    No parseable OpenAPI or Swagger document was retrievable from any Totogi-owned
+    host. The only candidate that returned HTTP 200 for a spec-shaped path
+    (docs.totogi.solutions/openapi.yaml) served the Redocly login HTML, not a
+    specification. Rather than harvest a placeholder, the openapi/ directory is
+    omitted entirely.
+  apisYmlApisListed: 2
+  apisYmlNote: |
+    Whoosh Programmable Messaging API is listed with its real public docs URL and
+    documented base path. Totogi Charging-as-a-Service is listed as a real, named
+    API product whose reference is behind a Redocly login wall, with no baseURL
+    asserted because none is public.

@@ -1,0 +1,160 @@
+aid: totogi
+url: https://raw.githubusercontent.com/api-evangelist/totogi/refs/heads/main/apis.yml
+name: Totogi
+kind: company
+description: >-
+  Totogi LLC is an Austin, Texas based vertical AI and BSS software vendor
+  that builds telecom operator software natively on the public cloud (AWS). Its two
+  products are the Totogi Ontology (formerly BSS Magic), a machine-readable semantic
+  layer that sits above a carrier's existing BSS, OSS, core, and network systems so
+  AI agents can reason and act across them, and Totogi Charging-as-a-Service, a
+  multi-tenant, serverless 5G Standalone converged charging system with built-in
+  policy control that integrates over the 4G/5G NSA Sy (PCRF) and 5G SA N28 (PCF)
+  interfaces. Totogi sits in the telecom value chain as a vendor to communications
+  service providers, MNOs, MVNOs, and MVNEs — it does not own spectrum and it does
+  not sell to developers directly. Its API posture is split. Totogi holds TM Forum
+  Platinum Open API Conformance Certification for 31 certified Open APIs and once
+  ranked #1 on the TM Forum Open API Certification Leaderboard, but the platform's
+  own API reference at docs.totogi.solutions is a Redocly login wall with no public
+  specification, no self-serve signup, and no downloadable OpenAPI. The one genuinely
+  public developer surface is Whoosh!, a Twilio-compatible A2P messaging API Totogi
+  sells through operators rather than to developers, with open quickstart docs, a
+  live API host, and four published helper libraries. No CAMARA, GSMA Open Gateway,
+  or Aduna reference appears anywhere in Totogi's own canonical AI index.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Telecommunications
+- United States
+- BSS
+- OSS
+- Charging
+- Messaging
+- SMS
+- A2P
+- 5G
+- TM Forum
+- Standards
+- Network Vendor
+- Vertical AI
+created: '2026-07-25'
+modified: '2026-07-25'
+specificationVersion: '0.19'
+apis:
+- aid: totogi:whoosh-programmable-messaging-api
+  name: Whoosh Programmable Messaging API
+  description: >-
+    Whoosh! is Totogi's Application-to-Person (A2P) messaging API, launched
+    in September 2023 and positioned as a drop-in replacement for Twilio's A2P APIs
+    that network operators can resell to keep enterprise messaging traffic and revenue
+    on their own network. The REST surface deliberately mirrors Twilio's 2010-04-01
+    account/resource shape — POST to /2010-04-01/Accounts/{AccountSid}/Messages.json
+    with To, From, and Body — and authenticates with HTTP Basic using an Account SID
+    and Auth Token issued from the Whoosh console. Delivery status is pushed back
+    via a StatusCallback webhook that POSTs on queued, failed, sent, delivered, and
+    undelivered. Quickstart documentation is public and un-gated; the console that
+    issues credentials is not, and there is no self-serve signup.
+  humanURL: https://docs.whoosh.totogi.solutions
+  baseURL: https://api.whoosh.totogi.solutions/2010-04-01/Accounts/
+  tags:
+  - Messaging
+  - SMS
+  - A2P
+  - CPaaS
+  - Webhooks
+  properties:
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions
+  - type: APIReference
+    url: https://docs.whoosh.totogi.solutions/send_message
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions/monitor_message_status
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions/node
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions/python
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions/java
+  - type: Documentation
+    url: https://docs.whoosh.totogi.solutions/ruby
+  - type: Console
+    url: https://console.whoosh.totogi.solutions
+  - type: SDK
+    url: https://www.npmjs.com/package/whoosh-sms
+  - type: SDK
+    url: https://pypi.org/project/WhooshSms/
+  - type: SDK
+    url: https://rubygems.org/gems/whoosh-ruby
+  - type: SDK
+    url: https://github.com/totogi/whoosh-java-releases
+  - type: Announcement
+    url: https://totogi.com/newsroom/press-releases/replacement-for-twilio-a2p-apis-for-network-operators/
+- aid: totogi:totogi-charging-as-a-service
+  name: Totogi Charging-as-a-Service
+  description: >-
+    Totogi Charging-as-a-Service is a serverless, multi-tenant 5G Standalone
+    and 5G Advanced converged charging system delivered as SaaS on AWS, with built-in
+    policy control and a single account management API across tenants. It integrates
+    with external policy management over the 4G/5G NSA Sy (PCRF) and 5G SA N28 (PCF)
+    interfaces, and Totogi's BSS surface is built on TM Forum Open APIs, for which
+    Totogi holds Platinum Conformance Certification across 31 certified Open APIs.
+    The product's API reference is published on a Redocly-hosted portal at
+    docs.totogi.solutions that returns a "Log in with Redocly" wall to anonymous
+    visitors — no specification, endpoint list, or base URL is publicly retrievable,
+    and access is arranged through a sales demo. Listed here as a real, named,
+    documented-behind-a-wall API product, not as a public developer surface.
+  humanURL: https://totogi.com/ai-native-charging/
+  tags:
+  - Charging
+  - BSS
+  - 5G
+  - TM Forum
+  - Policy Control
+  properties:
+  - type: Documentation
+    url: https://totogi.com/ai-native-charging/
+  - type: APIReference
+    url: https://docs.totogi.solutions
+  - type: Documentation
+    url: https://totogi.com/ai-native-charging/caas-product-updates/
+  - type: Conformance
+    url: https://www.tmforum.org/conformance-certification/open-api-conformance/
+  - type: Marketplace
+    url: https://aws.amazon.com/marketplace/pp/prodview-hnaq62hzpxane
+common:
+- type: Website
+  url: https://totogi.com
+- type: About
+  url: https://totogi.com/company/
+- type: FAQ
+  url: https://totogi.com/company/faqs/
+- type: Blog
+  url: https://totogi.com/blog/
+- type: BlogRSS
+  url: https://totogi.com/feed/
+- type: Newsroom
+  url: https://totogi.com/newsroom/press-releases/
+- type: CaseStudies
+  url: https://totogi.com/resources/case-studies/
+- type: GitHubOrganization
+  url: https://github.com/totogi
+- type: LinkedIn
+  url: https://www.linkedin.com/company/totogi/
+- type: X
+  url: https://x.com/totogi
+- type: YouTube
+  url: https://www.youtube.com/@Totogi
+- type: TermsOfService
+  url: https://totogi.com/terms/
+- type: PrivacyPolicy
+  url: https://totogi.com/privacy/
+- type: LLMsTxt
+  url: https://totogi.com/llms.txt
+- type: Facts
+  url: https://totogi.com/facts.json
+- type: Evidence
+  url: https://totogi.com/evidence.json
+- type: Glossary
+  url: https://totogi.com/glossary.json
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
