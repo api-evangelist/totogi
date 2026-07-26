@@ -1,0 +1,68 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.whoosh.totogi.solutions
+note: >-
+  All four published client libraries belong to Whoosh!, Totogi's Twilio-compatible A2P
+  messaging API. Totogi ships NO client library for Charging-as-a-Service — that API is
+  consumed as raw GraphQL against gql.produseast1.api.totogi.com / gql.prodapsoutheast1.api.totogi.com.
+  npm, PyPI, RubyGems, Maven Central, NuGet, pkg.go.dev, Packagist and crates.io were all
+  searched for a "totogi" package on 2026-07-25 and only whoosh-sms appears outside the
+  registries listed below.
+packages:
+- language: javascript
+  registry: npm
+  name: whoosh-sms
+  version: 0.1.4
+  url: https://www.npmjs.com/package/whoosh-sms
+  install: npm install whoosh-sms
+  official: true
+  api: Whoosh Programmable Messaging API
+  evidence: 'npm maintainer nikhil.mathugar@totogi.com; description "A Whoosh Node helper library"'
+  note: >-
+    Documented in the Whoosh Node.js quickstart. The source repo github.com/totogi/whoosh-node
+    now returns 404; the published package remains live.
+- language: python
+  registry: pypi
+  name: WhooshSms
+  version: 0.1.4
+  url: https://pypi.org/project/WhooshSms/
+  install: pip install WhooshSms
+  official: true
+  api: Whoosh Programmable Messaging API
+  evidence: 'PyPI author "Totogi" <help@totogi.com>; home_page github.com/totogi/whoosh-python/'
+  note: >-
+    The library is a Twilio-helper fork — the published quickstart imports `from twilio.rest
+    import Client` and reads TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN after installing WhooshSms.
+- language: ruby
+  registry: rubygems
+  name: whoosh-ruby
+  version: 0.1.5
+  url: https://rubygems.org/gems/whoosh-ruby
+  install: gem install whoosh-ruby
+  official: true
+  api: Whoosh Programmable Messaging API
+  evidence: 'RubyGems summary: "The official library for communicating with the Whoosh REST API."'
+- language: java
+  registry: github-releases
+  name: whoosh
+  group: com.whoosh.sdk
+  url: https://github.com/totogi/whoosh-java-releases
+  install: Download whoosh-0.1.0-jar-with-dependencies.jar from the GitHub release
+  official: true
+  api: Whoosh Programmable Messaging API
+  evidence: >-
+    Whoosh Java quickstart instructs "Add dependency com.whoosh.sdk with artifactId whoosh".
+    The repo contains a single artifact, whoosh-0.1.0-jar-with-dependencies.jar.
+  note: >-
+    Maven Central was searched for g:com.whoosh.sdk on 2026-07-25 and returned zero results —
+    the coordinate is published in the docs but the artifact is distributed only as a
+    standalone JAR from GitHub Releases.
+registries_searched:
+- {registry: npm, result: whoosh-sms only}
+- {registry: pypi, result: WhooshSms only (totogi, totogi-sdk both 404)}
+- {registry: rubygems, result: whoosh-ruby only}
+- {registry: maven-central, result: none (g:com.whoosh.sdk returns 0 docs)}
+- {registry: nuget, result: none}
+- {registry: pkg.go.dev, result: none}
+- {registry: packagist, result: none}
+- {registry: crates.io, result: none}

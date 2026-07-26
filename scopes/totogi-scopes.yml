@@ -1,0 +1,131 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.api.totogi.com/
+docs: https://docs.api.totogi.com/
+model: named-roles
+note: Totogi CaaS does not expose OAuth scope strings in its public reference. Authorization is expressed
+  as NAMED ROLES, published per operation as "Authorized Roles" in the GraphQL reference, and carried
+  on the OAuth 2.0 client-credentials token minted for a tenant client. The roles below are transcribed
+  verbatim from the published per-operation authorization statements.
+schemes:
+- name: OAuth2 client credentials
+  source: https://github.com/totogi/marketplace-api-demo (Totogi-published demo)
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://oauth.totogi.io/oauth2/token
+    scope_example: https://myresourceserver1.com/marketplace
+    note: Scope value is transcribed verbatim from Totogi's own published demo client; it reads as an
+      AWS Cognito resource-server identifier and is very likely environment-specific. No canonical scope
+      reference page is published.
+roles:
+- role: Plan_Designer
+  operations: 29
+  sample_operations:
+  - mutation.archivePlanVersion
+  - mutation.createPlan
+  - mutation.createPlanFromInitialRecurringFirstUsageTemplate
+  - mutation.createPlanFromInitialTemplate
+  - mutation.createPlanVersionFromInitialRecurringFirstUsageTemplate
+  - mutation.createPlanVersionFromInitialTemplate
+- role: Plan_Admin
+  operations: 24
+  sample_operations:
+  - mutation.createBalanceType
+  - mutation.createLifecycle
+  - mutation.createPolicyCounter
+  - mutation.deleteBalanceType
+  - mutation.deleteBalanceTypeCounter
+  - mutation.deleteLifecycle
+- role: Account_Admin
+  operations: 20
+  sample_operations:
+  - mutation.cancelPlanSubscription
+  - mutation.createAccount
+  - mutation.createBalance
+  - mutation.createDevice
+  - mutation.deleteAccount
+  - mutation.deleteAccountBalanceTypeCounter
+- role: Plan_Publisher
+  operations: 20
+  sample_operations:
+  - mutation.deployPlan
+  - mutation.makePlanAssignable
+  - query.getBalanceType
+  - query.getBalanceTypeCounters
+  - query.getBalanceTypes
+  - query.getDeployedFieldMappings
+- role: Plan_Query
+  operations: 18
+  sample_operations:
+  - query.getBalanceType
+  - query.getBalanceTypeCounters
+  - query.getBalanceTypes
+  - query.getDeployedFieldMappings
+  - query.getFieldMappings
+  - query.getLifecycle
+- role: Tenant_Admin
+  operations: 15
+  sample_operations:
+  - mutation.createClientCredentials
+  - mutation.createUser
+  - mutation.deleteClientCredentials
+  - mutation.deleteUser
+  - mutation.resetUserPassword
+  - mutation.updateArchivingPolicy
+- role: Network_Admin
+  operations: 15
+  sample_operations:
+  - mutation.createQoSProfile
+  - mutation.deleteQoSProfile
+  - mutation.deployFieldMappings
+  - mutation.updateMyProviderConfig
+  - mutation.updateQoSProfile
+  - mutation.updateRatingGroupHierarchy
+- role: Network_Operator
+  operations: 8
+  sample_operations:
+  - mutation.createFieldMapping
+  - mutation.deleteFieldMapping
+  - mutation.updateFieldMapping
+  - mutation.updateSGSNTable
+  - query.getDeployedFieldMappings
+  - query.getFieldMappings
+- role: Data_Admin
+  operations: 7
+  sample_operations:
+  - query.getAccount
+  - query.getAccountBalanceTypeCounters
+  - query.getDevice
+  - query.getEventDataRecordsByAccount
+  - query.getEventDataRecordsByDevice
+  - query.getMyProviderConfig
+- role: Account_Query
+  operations: 5
+  sample_operations:
+  - query.getAccount
+  - query.getAccountBalanceTypeCounters
+  - query.getDevice
+  - query.getMyProviderConfig
+  - query.getRelatedAccountsByDevice
+- role: All
+  operations: 2
+  sample_operations:
+  - mutation.updateUserProfile
+  - query.getCurrentUser
+- role: Dashboard_Reader
+  operations: 1
+  sample_operations:
+  - query.getMyDashboard
+- role: Product_Admin
+  operations: 1
+  sample_operations:
+  - mutation.exportCustomerDB
+- role: System_Admin
+  operations: 1
+  sample_operations:
+  - mutation.exportCustomerDB
+- role: Infrastructure
+  operations: 1
+  sample_operations:
+  - mutation.triggerRar
+scopes: []

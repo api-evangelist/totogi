@@ -1,0 +1,76 @@
+generated: '2026-07-25'
+method: searched
+result: none
+note: >-
+  Every /.well-known/ path below was probed live on 2026-07-25 against all five Totogi-owned
+  hosts. Nothing was returned: Totogi publishes no security.txt, no OIDC discovery document,
+  no RFC 8414 authorization-server metadata, no RFC 9727 api-catalog and no ai-plugin.json on
+  any host it controls. Recorded as an honest negative — no WellKnown or SecurityTxt pointer
+  is wired in apis.yml because no document exists.
+caveat: >-
+  docs.totogi.solutions is a Redocly login wall that answers HTTP 200 to EVERY path, including
+  all six /.well-known/ paths. Each 200 there is the ~17KB "Log in with Redocly" HTML page, not
+  a discovery document, and is recorded as a false positive rather than a hit.
+hosts:
+- host: https://api.whoosh.totogi.solutions
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://docs.whoosh.totogi.solutions
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://totogi.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://totogi.solutions
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://oauth.totogi.io
+  note: >-
+    The OAuth 2.0 token endpoint Totogi's own published demo client calls. Returns 403 to every
+    anonymous /.well-known/ request and 500 at the root, so no authorization-server metadata is
+    retrievable without a tenant credential.
+  documents:
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/jwks.json, status: 403}
+- host: https://docs.totogi.solutions
+  note: Redocly login wall — all 200s below are the login page, NOT discovery documents.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, real: false}
+  - {path: /.well-known/openid-configuration, status: 200, real: false}
+  - {path: /.well-known/oauth-authorization-server, status: 200, real: false}
+  - {path: /.well-known/oauth-protected-resource, status: 200, real: false}
+  - {path: /.well-known/api-catalog, status: 200, real: false}
+  - {path: /.well-known/ai-plugin.json, status: 200, real: false}
+ai_index:
+  note: >-
+    Totogi publishes no /.well-known/ surface but DOES publish an unusually complete agent-facing
+    content layer at the web root, linked from its footer as "AI Index". These are content
+    documents, not API discovery documents, and are wired in apis.yml under their own types.
+  documents:
+  - {url: 'https://totogi.com/llms.txt', status: 200}
+  - {url: 'https://totogi.com/llms-full.txt', status: 200}
+  - {url: 'https://totogi.com/facts.json', status: 200}
+  - {url: 'https://totogi.com/evidence.json', status: 200}
+  - {url: 'https://totogi.com/glossary.json', status: 200}
+  - {url: 'https://totogi.com/case-studies.json', status: 200}

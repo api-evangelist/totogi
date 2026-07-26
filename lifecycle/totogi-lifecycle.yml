@@ -1,0 +1,196 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.api.totogi.com/
+versioning:
+  scheme: unversioned-graphql-endpoint
+  current: schema reference generated 2026-07-23T22:13:14Z
+  docs: https://docs.api.totogi.com/
+  note: Totogi CaaS ships one GraphQL endpoint per region with no version segment in the path. Change
+    is managed additively in the schema, with breaking removals staged through field-level @deprecated
+    markers that carry an explicit deprecated date and expiration date.
+  legacy_reference:
+    url: https://apis.totogi.solutions/ccab/
+    endpoint: https://api.ccab.totogi.com/graphql
+    note: An older SpectaQL build of the same reference is still served here with an unresolved ${DOCS_VERSION}
+      placeholder and a smaller operation set. docs.api.totogi.com is the current one.
+deprecation:
+  policy_url: https://docs.api.totogi.com/
+  mechanism: graphql-field-deprecation
+  sunset_header: false
+  dated: true
+  note: 'Totogi publishes a deprecation date AND an expiration date in the @deprecated reason text of
+    every deprecated field, which is an unusually explicit sunset contract for a GraphQL API. Example:
+    Account.customData — "Deprecated date is 2026-05-26. Expiration date is 2026-07-26."'
+  deprecated_field_count: 35
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime commitment is published on any Totogi-owned host.
+status_page: null
+status_page_note: Probed status.totogi.com, status.totogi.solutions and status.ccab.totogi.com on 2026-07-25
+  — none resolve. Totogi publishes no public status page.
+support:
+  url: https://support.ccab.totogi.com/hc/en-us
+  email: support@totogi.com
+  note: Support portal is linked from the API reference; the /hc/en-us path returned 404 anonymously.
+deprecated_operations: []
+deprecated_fields:
+- type: Account
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: Account
+  field: friendsAndFamily
+  reason: This field is deprecated in favor of custom fields. Deprecated date is 2025-02-14. Expiration
+    date is 2025-04-13.
+  deprecated_date: '2025-02-14'
+  expiration_date: '2025-04-13'
+- type: AccountPostpaidProperties
+  field: timezone
+  reason: This field is deprecated in favor of the top-level timezone field. Use Account.timezone instead.
+    Deprecated date is 2025-11-18. Expiration date is 2026-01-18.
+  deprecated_date: '2025-11-18'
+  expiration_date: '2026-01-18'
+- type: ApiLimitsConfig
+  field: rejectRequestsOverSoftLimit
+  reason: Use minLimit, maxLimit, burstPercentage, currentLimit, currentRate, and averageRate for the
+    Rate Limiting Standalone component instead.
+- type: ApiLimitsConfig
+  field: softLimitTps
+  reason: Use minLimit, maxLimit, burstPercentage, currentLimit, currentRate, and averageRate for the
+    Rate Limiting Standalone component instead.
+- type: ApiLimitsConfig
+  field: hardLimitTps
+  reason: Use minLimit, maxLimit, burstPercentage, currentLimit, currentRate, and averageRate for the
+    Rate Limiting Standalone component instead.
+- type: ApiLimitsConfig
+  field: overSoftLimitUntil
+  reason: Use minLimit, maxLimit, burstPercentage, currentLimit, currentRate, and averageRate instead.
+- type: ApiLimitsConfig
+  field: overHardLimitUntil
+  reason: Use minLimit, maxLimit, burstPercentage, currentLimit, currentRate, and averageRate instead.
+- type: BalancePayload
+  field: balanceInfo
+  reason: Use balanceInfos instead
+- type: CreateAccountInput
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: CreateAccountInput
+  field: friendsAndFamily
+  reason: This field is deprecated in favor of custom fields. Deprecated date is 2025-02-14. Expiration
+    date is 2025-04-13.
+  deprecated_date: '2025-02-14'
+  expiration_date: '2025-04-13'
+- type: CreateAccountPostpaidPropertiesInput
+  field: timezone
+  reason: This field is deprecated in favor of the top-level timezone field. Use CreateAccountInput.timezone
+    instead. Deprecated date is 2025-11-18. Expiration date is 2026-01-18.
+  deprecated_date: '2025-11-18'
+  expiration_date: '2026-01-18'
+- type: CreateBalanceInput
+  field: balanceInfo
+  reason: Use balanceInfos instead
+- type: CreateDeviceInput
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: DeleteBalanceInput
+  field: balanceTypeId
+  reason: Balance type ID is no longer required for balance deletion
+- type: DeleteBalanceInput
+  field: balanceId
+  reason: Use balanceIds instead
+- type: DeleteBalancePayload
+  field: deletedBalanceId
+  reason: Use deletedBalances instead
+- type: DeployPlanVersionInput
+  field: migrateFromVersions
+  reason: Use aliases for plan version migration instead. See alias field on DeployPlanVersionInput. Deprecated
+    date is 2026-02-16. Expiration date is 2026-04-16.
+  deprecated_date: '2026-02-16'
+  expiration_date: '2026-04-16'
+- type: Device
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: GetUserPayload
+  field: profilePicture
+  reason: User profile pictures are no longer supported. Deprecated date is 2026-04-13. Expiration date
+    is 2026-06-13.
+  deprecated_date: '2026-04-13'
+  expiration_date: '2026-06-13'
+- type: ProfilePhoto
+  field: url
+  reason: User profile pictures are no longer supported. Deprecated date is 2026-04-13. Expiration date
+    is 2026-06-13.
+  deprecated_date: '2026-04-13'
+  expiration_date: '2026-06-13'
+- type: ProfilePhoto
+  field: uploadUrl
+  reason: User profile pictures are no longer supported. Deprecated date is 2026-04-13. Expiration date
+    is 2026-06-13.
+  deprecated_date: '2026-04-13'
+  expiration_date: '2026-06-13'
+- type: ProratingOptions
+  field: alignToBillingDoM
+  reason: Not supported in Rate Anything.
+- type: ProratingOptionsInput
+  field: alignToBillingDoM
+  reason: Not supported in Rate Anything.
+- type: SaveUserPayload
+  field: profilePicture
+  reason: User profile pictures are no longer supported. Deprecated date is 2026-04-13. Expiration date
+    is 2026-06-13.
+  deprecated_date: '2026-04-13'
+  expiration_date: '2026-06-13'
+- type: SubscribeToPlanVersionInput
+  field: overrides
+  reason: Only valid for Template-based plans
+- type: SubscribedPlanVersion
+  field: overrides
+  reason: Only valid for Template-based plans
+- type: UpdateAccountInput
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: UpdateAccountInput
+  field: friendsAndFamily
+  reason: This field is deprecated in favor of custom fields. Deprecated date is 2025-02-14. Expiration
+    date is 2025-04-13.
+  deprecated_date: '2025-02-14'
+  expiration_date: '2025-04-13'
+- type: UpdateAccountPostpaidPropertiesInput
+  field: timezone
+  reason: This field is deprecated in favor of the top-level timezone field. Use UpdateAccountInput.timezone
+    instead. Deprecated date is 2025-11-18. Expiration date is 2026-01-18.
+  deprecated_date: '2025-11-18'
+  expiration_date: '2026-01-18'
+- type: UpdateBalanceInfoInput
+  field: balanceTypeId
+  reason: Balance type ID is no longer required for balance updates
+- type: UpdateBalanceInput
+  field: balanceId
+  reason: Use balanceId in balanceInfos instead
+- type: UpdateBalanceInput
+  field: balanceInfo
+  reason: Use balanceInfos instead
+- type: UpdateDeviceInput
+  field: customData
+  reason: Schemaless custom data will not be supported in the future. Use customProperties with a provider
+    level schema. Deprecated date is 2026-05-26. Expiration date is 2026-07-26.
+  deprecated_date: '2026-05-26'
+  expiration_date: '2026-07-26'
+- type: UpdatePlanSubscriptionInput
+  field: overrides
+  reason: Only valid for Template-based plans

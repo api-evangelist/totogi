@@ -1,0 +1,1197 @@
+generated: '2026-07-25'
+method: derived
+status: candidate
+source: https://docs.api.totogi.com/
+note: Totogi publishes NO hosted or remote MCP server as of this round — the docs, the GitHub org, npm
+  and the public MCP registries were all searched and none exists. Totogi does market its Ontology product
+  as the semantic layer AI agents act through, but that is a platform capability, not a published MCP
+  endpoint. The tool list below is a CANDIDATE derived one-to-one from the real, public Charging-as-a-Service
+  GraphQL operations; each tool inherits its input contract from the named operation in the SDL. Nothing
+  here is a Totogi claim.
+server:
+  name: totogi-charging
+  transport: http
+  url: null
+backing_api:
+  kind: graphql
+  endpoints:
+  - https://gql.produseast1.api.totogi.com/graphql
+  - https://gql.prodapsoutheast1.api.totogi.com/graphql
+  schema: graphql/totogi-charging-as-a-service.graphql
+  auth: OAuth 2.0 bearer token; per-operation named roles
+counts:
+  tools: 93
+  read_tools: 32
+  write_tools: 61
+tools:
+- name: get_account
+  description: Returns an account for a provider by an account ID.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getAccount
+  arguments:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+  - 'balanceTypeIds: [ID!]'
+  returns: AccountResult
+  authorized_roles:
+  - Account_Query
+  - Account_Admin
+  - Data_Admin
+  mutating: false
+- name: get_account_balance_type_counters
+  description: Retrieve Balance Type Counters configured for an account.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getAccountBalanceTypeCounters
+  arguments:
+  - 'input: GetAccountBalanceTypeCountersInput!'
+  returns: AccountBalanceTypeCountersResult
+  authorized_roles:
+  - Account_Admin
+  - Account_Query
+  - Data_Admin
+  mutating: false
+- name: get_balance_type
+  description: Gets the balance type information of a specific balance type ID.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getBalanceType
+  arguments:
+  - 'getBalanceTypeInput: GetBalanceTypeInput!'
+  returns: GetBalanceTypeResult
+  authorized_roles:
+  - Plan_Admin
+  - Plan_Publisher
+  - Plan_Designer
+  - Plan_Query
+  mutating: false
+- name: get_balance_type_counters
+  description: Retrieve Balance Type Counter notifications based on the provided input parameters. At
+    least one value must be supplied.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getBalanceTypeCounters
+  arguments:
+  - 'input: GetBalanceTypeCountersInput!'
+  returns: GetBalanceTypeCountersResult
+  authorized_roles:
+  - Plan_Admin
+  - Plan_Publisher
+  - Plan_Designer
+  - Plan_Query
+  mutating: false
+- name: get_balance_types
+  description: Gets the balance type information of a list or all balance type IDs. If none is provided,
+    all are returned. If some are provided, the ones that are found are returned.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getBalanceTypes
+  arguments:
+  - 'getBalanceTypesInput: GetBalanceTypesInput!'
+  returns: GetBalanceTypesResult
+  authorized_roles:
+  - Plan_Admin
+  - Plan_Publisher
+  - Plan_Designer
+  - Plan_Query
+  mutating: false
+- name: get_client_credentials
+  description: Gets the client credentials for a specific client.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getClientCredentials
+  arguments:
+  - 'providerId: ID!'
+  - 'clientId: ID!'
+  returns: GetClientCredentialsResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: false
+- name: get_current_user
+  description: Gets info for the currently logged in User . When used in an API context, this will return
+    the API user.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getCurrentUser
+  arguments: []
+  returns: GetUserPayload
+  authorized_roles:
+  - All
+  mutating: false
+- name: get_deployed_field_mappings
+  description: Gets deployed field mappings for a provider sorted by when they will be applied.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getDeployedFieldMappings
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  returns: DeployedFieldMappingConnection
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Network_Operator
+  - Network_Admin
+  mutating: false
+- name: get_device
+  description: Returns a Device for a provider by a device ID.
+  category: devices
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getDevice
+  arguments:
+  - 'providerId: ID!'
+  - 'deviceId: ID!'
+  returns: DeviceResult
+  authorized_roles:
+  - Account_Query
+  - Account_Admin
+  - Data_Admin
+  mutating: false
+- name: get_event_data_records_by_account
+  description: Gets a list of event data records for an Account with pagination.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getEventDataRecordsByAccount
+  arguments:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  - 'filterBy: EventDataRecordFilter'
+  returns: EventDataRecordAccountConnectionResult
+  authorized_roles:
+  - Data_Admin
+  mutating: false
+- name: get_event_data_records_by_device
+  description: Gets a list of event data records for a Device with pagination.
+  category: devices
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getEventDataRecordsByDevice
+  arguments:
+  - 'providerId: ID!'
+  - 'deviceId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  - 'filterBy: EventDataRecordFilter'
+  returns: EventDataRecordDeviceConnectionResult
+  authorized_roles:
+  - Data_Admin
+  mutating: false
+- name: get_field_mappings
+  description: Gets NOT deployed field mappings for a provider.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getFieldMappings
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  returns: FieldMappingConnection
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Network_Operator
+  - Network_Admin
+  mutating: false
+- name: get_lifecycle
+  description: Gets a single lifecycle.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getLifecycle
+  arguments:
+  - 'providerId: ID!'
+  - 'lifecycleId: ID!'
+  returns: GetLifecycleResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Plan_Admin
+  mutating: false
+- name: get_lifecycles
+  description: Gets a list of all lifecycles.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getLifecycles
+  arguments:
+  - 'providerId: ID!'
+  returns: GetLifecyclesResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Plan_Admin
+  mutating: false
+- name: get_my_dashboard
+  description: Gets the current user’s Dashboard information
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getMyDashboard
+  arguments: []
+  returns: GetMyDashboardResult
+  authorized_roles:
+  - Dashboard_Reader
+  mutating: false
+- name: get_my_provider_config
+  description: Gets tenant configuration of the logged in User .
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getMyProviderConfig
+  arguments: []
+  returns: GetMyProviderConfigResult
+  authorized_roles:
+  - Tenant_Admin
+  - Account_Admin
+  - Account_Query
+  - Data_Admin
+  - Plan_Designer
+  - Plan_Publisher
+  - Plan_Query
+  - Network_Admin
+  - Network_Operator
+  - Plan_Admin
+  mutating: false
+- name: get_my_provider_list
+  description: Returns the list of providers/tenants the authenticated user belongs to. Requires only
+    a valid JWT (no role needed).
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getMyProviderList
+  arguments: []
+  returns: GetMyProviderListResult
+  authorized_roles: []
+  mutating: false
+- name: get_my_restore_jobs
+  description: Gets restore jobs of the current tenant.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getMyRestoreJobs
+  arguments:
+  - 'getMyRestoreJobsInput: GetMyRestoreJobsInput!'
+  returns: GetMyRestoreJobsResult
+  authorized_roles:
+  - Tenant_Admin
+  mutating: false
+- name: get_plan
+  description: Gets a Plan for a provider by a plan ID.
+  category: plans-and-subscriptions
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getPlan
+  arguments:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+  returns: PlanResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  mutating: false
+- name: get_plan_version
+  description: Gets a Plan Version for a provider by a plan version ID.
+  category: plans-and-subscriptions
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getPlanVersion
+  arguments:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+  returns: PlanVersionResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  mutating: false
+- name: get_plans
+  description: Gets a list of plans for a provider with pagination.
+  category: plans-and-subscriptions
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getPlans
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  - 'orderBy: PlanOrder'
+  returns: PlanConnection
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  mutating: false
+- name: get_policy_counter
+  description: Gets a Policy Counter for a provider by ID.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getPolicyCounter
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  returns: GetPolicyCounterResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Admin
+  - Plan_Publisher
+  - Network_Admin
+  mutating: false
+- name: get_policy_counters
+  description: Gets all Policy Counters for a provider with pagination support.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getPolicyCounters
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  returns: GetPolicyCountersResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Admin
+  - Plan_Publisher
+  - Network_Admin
+  mutating: false
+- name: get_qo_s_profile
+  description: Gets a QoS Profile for a provider by profile ID.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getQoSProfile
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  returns: GetQoSProfileResult
+  authorized_roles:
+  - Plan_Designer
+  - Plan_Admin
+  - Plan_Query
+  - Plan_Publisher
+  - Network_Admin
+  mutating: false
+- name: get_qo_s_profiles
+  description: Gets all QoS Profiles for a provider with pagination support.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getQoSProfiles
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int'
+  - 'after: String'
+  returns: GetQoSProfilesResult
+  authorized_roles:
+  - Plan_Designer
+  - Plan_Admin
+  - Plan_Query
+  - Plan_Publisher
+  - Network_Admin
+  mutating: false
+- name: get_rating_group_hierarchy
+  description: Gets Rating Group hierarchy for a provider.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getRatingGroupHierarchy
+  arguments:
+  - 'providerId: ID!'
+  returns: RatingGroupResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Network_Admin
+  - Plan_Admin
+  mutating: false
+- name: get_related_accounts_by_device
+  description: Gets a list of all parent accounts for a provided device ID.
+  category: accounts-and-balances
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getRelatedAccountsByDevice
+  arguments:
+  - 'providerId: ID!'
+  - 'deviceId: ID!'
+  returns: GetRelatedAccountsByDeviceResult
+  authorized_roles:
+  - Account_Query
+  - Account_Admin
+  - Data_Admin
+  mutating: false
+- name: get_s_g_s_n_table
+  description: Gets the SGSN table for a provider.
+  category: policy-and-network
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getSGSNTable
+  arguments:
+  - 'providerId: ID!'
+  returns: SGSNTableResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Network_Operator
+  mutating: false
+- name: get_settings
+  description: Gets settings for a provider.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getSettings
+  arguments:
+  - 'providerId: ID!'
+  returns: SettingsResult
+  authorized_roles:
+  - Plan_Query
+  - Plan_Designer
+  - Plan_Publisher
+  - Plan_Admin
+  mutating: false
+- name: get_user
+  description: Gets a User for a given provider ID and user ID, or returns a UserNotFound error.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.getUser
+  arguments:
+  - 'getUserInput: GetUserInput!'
+  returns: GetUserResult
+  authorized_roles:
+  - Tenant_Admin
+  mutating: false
+- name: list_all_client_credentials
+  description: Gets all the client credentials for a specific provider.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.listAllClientCredentials
+  arguments:
+  - 'providerId: ID!'
+  returns: ListAllClientCredentialsResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: false
+- name: list_users
+  description: Lists the users for the given provider ID.
+  category: tenant-administration
+  operation_kind: query
+  source_operation: graphql/totogi-charging-as-a-service.graphql#query.listUsers
+  arguments:
+  - 'providerId: ID!'
+  - 'first: Int!'
+  - 'after: String'
+  returns: ListUsersResult
+  authorized_roles:
+  - Tenant_Admin
+  mutating: false
+- name: archive_plan_version
+  description: Archives a Plan Version if it is suspended with no subscribed accounts.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.archivePlanVersion
+  arguments:
+  - 'input: ArchivePlanVersionInput!'
+  returns: ArchivePlanVersionResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: cancel_plan_subscription
+  description: Cancels existing assignment of a Plan to an Account . Uses the planSubscriptionId to identify
+    the correct plan. Balances from the Plan remain after cancellation unless cancelManagedBalances is
+    true, in which case the man
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.cancelPlanSubscription
+  arguments:
+  - 'input: CancelPlanSubscriptionInput!'
+  returns: CancelPlanVersionSubscriptionResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: create_account
+  description: Creates an Account for a provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createAccount
+  arguments:
+  - 'input: CreateAccountInput!'
+  returns: CreateAccountResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: create_balance
+  description: Creates a new balance for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createBalance
+  arguments:
+  - 'input: CreateBalanceInput!'
+  returns: CreateBalanceResult
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: create_balance_type
+  description: Creates a new balance type for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createBalanceType
+  arguments:
+  - 'input: CreateBalanceTypeInput!'
+  returns: CreateBalanceTypeResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: create_client_credentials
+  description: Creates a new Client with client credentials.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createClientCredentials
+  arguments:
+  - 'providerId: ID!'
+  - 'input: CreateClientCredentialsInput!'
+  returns: CreateClientCredentialsResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: create_device
+  description: Creates a Device in an Account .
+  category: devices
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createDevice
+  arguments:
+  - 'input: CreateDeviceInput!'
+  returns: CreateDeviceResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: create_field_mapping
+  description: Creates a Field Mapping in draft. Draft field mappings need to be deployed using deployFieldMappings
+    to become effective.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createFieldMapping
+  arguments:
+  - 'input: CreateFieldMappingInput!'
+  returns: CreateFieldMappingResult!
+  authorized_roles:
+  - Network_Operator
+  mutating: true
+- name: create_lifecycle
+  description: Creates a lifecycle.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createLifecycle
+  arguments:
+  - 'input: CreateLifecycleInput!'
+  returns: CreateLifecycleResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: create_plan
+  description: Creates a Plan for a provider. This mutation is reserved for the upcoming Rate Anything
+    capability, enabling customers to configure rates based on any attribute from the network message
+    or subscriber database, such as bi
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPlan
+  arguments:
+  - 'providerId: ID!'
+  - 'input: PlanInput!'
+  returns: CreatePlanResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: create_plan_from_initial_recurring_first_usage_template
+  description: Creates a plan by using a template.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPlanFromInitialRecurringFirstUsageTemplate
+  arguments:
+  - 'input: CreatePlanFromInitialRecurringFirstUsageTemplateInput!'
+  returns: CreatePlanFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: create_plan_from_initial_template
+  description: Creates a Plan by using a template.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPlanFromInitialTemplate
+  arguments:
+  - 'input: CreatePlanFromInitialTemplateInput!'
+  returns: CreatePlanFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: create_plan_version_from_initial_recurring_first_usage_template
+  description: Updates a plan that was created by using a template. Creates a new version of the plan.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPlanVersionFromInitialRecurringFirstUsageTemplate
+  arguments:
+  - 'input: CreatePlanVersionFromInitialRecurringFirstUsageTemplateInput!'
+  returns: CreatePlanVersionFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: create_plan_version_from_initial_template
+  description: Creates a new Plan Version of a Plan that was originally created by using createPlanFromInitialTemplate
+    .
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPlanVersionFromInitialTemplate
+  arguments:
+  - 'input: CreatePlanVersionFromInitialTemplateInput!'
+  returns: CreatePlanVersionFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: create_policy_counter
+  description: Creates a Policy Counter for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createPolicyCounter
+  arguments:
+  - 'providerId: ID!'
+  - 'input: PolicyCounterInput!'
+  returns: CreatePolicyCounterResult!
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: create_qo_s_profile
+  description: Creates a QoS Profile for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createQoSProfile
+  arguments:
+  - 'providerId: ID!'
+  - 'input: QoSProfileInput!'
+  returns: CreateQoSProfileResult!
+  authorized_roles:
+  - Network_Admin
+  mutating: true
+- name: create_user
+  description: Creates a tenant User .
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.createUser
+  arguments:
+  - 'input: CreateUserInput!'
+  returns: CreateUserResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: delete_account
+  description: Deletes an Account if it does not have any children or devices.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteAccount
+  arguments:
+  - 'input: DeleteAccountInput!'
+  returns: DeleteAccountResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: delete_account_balance_type_counter
+  description: Delete a Balance Type Counter for an account based on the provided input parameters.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteAccountBalanceTypeCounter
+  arguments:
+  - 'input: DeleteAccountBalanceTypeCounterInput!'
+  returns: DeleteAccountBalanceTypeCounterResult
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: delete_balance
+  description: Deletes an existing balance for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteBalance
+  arguments:
+  - 'input: DeleteBalanceInput!'
+  returns: DeleteBalanceResult
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: delete_balance_type
+  description: Deletes an existing balance type for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteBalanceType
+  arguments:
+  - 'input: DeleteBalanceTypeInput!'
+  returns: DeleteBalanceTypeResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: delete_balance_type_counter
+  description: Delete a Balance Type Counter based on the provided input parameters.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteBalanceTypeCounter
+  arguments:
+  - 'input: DeleteBalanceTypeCounterInput!'
+  returns: DeleteBalanceTypeCounterResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: delete_client_credentials
+  description: Deletes a Client credentials.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteClientCredentials
+  arguments:
+  - 'providerId: ID!'
+  - 'clientId: ID!'
+  returns: DeleteClientCredentialsResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: delete_device
+  description: Deletes a Device from an Account .
+  category: devices
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteDevice
+  arguments:
+  - 'input: DeleteDeviceInput!'
+  returns: DeleteDeviceResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: delete_field_mapping
+  description: Deletes a Field Mapping in draft. Draft field mappings need to be deployed using deployFieldMappings
+    to become effective.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteFieldMapping
+  arguments:
+  - 'input: DeleteFieldMappingInput!'
+  returns: DeleteFieldMappingResult!
+  authorized_roles:
+  - Network_Operator
+  mutating: true
+- name: delete_lifecycle
+  description: Deletes a lifecycle.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteLifecycle
+  arguments:
+  - 'input: DeleteLifecycleInput!'
+  returns: DeleteLifecycleResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: delete_plan
+  description: Deletes a Plan . Deployed plans cannot be deleted but its plan versions can be archived
+    using archivePlanVersion . This mutation is reserved for the upcoming Rate Anything capability, enabling
+    customers to configure rate
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deletePlan
+  arguments:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+  returns: DeletePlanResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: delete_plan_version
+  description: Deletes a Plan Version if it was never deployed.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deletePlanVersion
+  arguments:
+  - 'input: DeletePlanVersionInput!'
+  returns: DeletePlanVersionResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: delete_policy_counter
+  description: Deletes a Policy Counter for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deletePolicyCounter
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  returns: DeletePolicyCounterResult!
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: delete_qo_s_profile
+  description: Deletes a QoS Profile for a provider. The profile cannot be deleted if it is referenced
+    by any plan versions.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteQoSProfile
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  returns: DeleteQoSProfileResult!
+  authorized_roles:
+  - Network_Admin
+  mutating: true
+- name: delete_user
+  description: Deletes a tenant User .
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deleteUser
+  arguments:
+  - 'input: DeleteUserInput!'
+  returns: DeleteUserResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: deploy_field_mappings
+  description: 'Once you have defined a new Field Mapping , you can call deployFieldMappings and specify
+    the path of the field mapping you want to deploy. By providing a from date, you can specify a point
+    in the future when current set '
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deployFieldMappings
+  arguments:
+  - 'input: DeployFieldMappingsInput!'
+  returns: DeployFieldMappingsResult!
+  authorized_roles:
+  - Network_Admin
+  mutating: true
+- name: deploy_plan
+  description: Deploys a Plan so it can be subscribed by accounts. A deployed plan cannot be updated anymore.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.deployPlan
+  arguments:
+  - 'input: DeployPlanVersionInput!'
+  returns: DeployPlanVersionResult!
+  authorized_roles:
+  - Plan_Publisher
+  mutating: true
+- name: export_customer_d_b
+  description: Triggers an on-demand, admin-only, single-provider incremental customer DB export.
+  category: other
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.exportCustomerDB
+  arguments:
+  - 'providerId: ID!'
+  - 'exportTime: AWSDateTime!'
+  returns: ExportCustomerDBResult!
+  authorized_roles:
+  - Product_Admin
+  - System_Admin
+  mutating: true
+- name: make_plan_assignable
+  description: Makes a Plan assignable so it can be subscribed by accounts. Plan must be deployed to be
+    able to make it assignable.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.makePlanAssignable
+  arguments:
+  - 'input: AssignablePlanVersionInput!'
+  - 'revert: Boolean'
+  returns: AssignablePlanVersionResult!
+  authorized_roles:
+  - Plan_Publisher
+  mutating: true
+- name: reset_user_password
+  description: Resets the password of a given User .
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.resetUserPassword
+  arguments:
+  - 'input: ResetUserPasswordInput!'
+  returns: ResetUserPasswordResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: subscribe_to_plan
+  description: Assigns a Plan to an Account for a predefined period of time. If the from parameter is
+    not specified, the plan starts immediately. If the to parameter is not specified, the plan continues
+    indefinitely for recurring plans
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.subscribeToPlan
+  arguments:
+  - 'input: SubscribeToPlanVersionInput!'
+  returns: SubscribeToPlanVersionResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: trigger_rar
+  description: Create RARs for all active sessions of an account.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.triggerRar
+  arguments:
+  - 'input: TriggerRarInput!'
+  returns: TriggerRarResult
+  authorized_roles:
+  - Infrastructure
+  mutating: true
+- name: update_account
+  description: Updates Account attributes.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateAccount
+  arguments:
+  - 'input: UpdateAccountInput!'
+  returns: UpdateAccountResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_account_balance_type_counter
+  description: Updates or creates a Balance Type Counter for an account based on the provided input parameters.
+    If balanceTypeCounterId is specified, the new configuration will override the settings inherited from
+    the associated Balanc
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateAccountBalanceTypeCounter
+  arguments:
+  - 'input: UpdateAccountBalanceTypeCounterInput!'
+  returns: AccountBalanceTypeCounterResult
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_account_parent
+  description: Updates the parent of an Account .
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateAccountParent
+  arguments:
+  - 'providerId: ID!'
+  - 'input: UpdateAccountParentInput!'
+  returns: UpdateAccountParentResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_archiving_policy
+  description: Creates a lifecycle rule on EDR S3 bucket to move objects to Glacier store after a period
+    of time.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateArchivingPolicy
+  arguments:
+  - 'input: UpdateArchivingPolicyInput!'
+  returns: UpdateArchivingPolicyResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: update_balance
+  description: Updates an existing balance for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateBalance
+  arguments:
+  - 'input: UpdateBalanceInput!'
+  returns: UpdateBalanceResult
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_balance_type
+  description: Updates an existing balance type for the provider.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateBalanceType
+  arguments:
+  - 'input: UpdateBalanceTypeInput!'
+  returns: UpdateBalanceTypeResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: update_balance_type_counter
+  description: Update or create Balance Type Counter notifications based on the provided input parameters.
+    Creates or updates BalanceTypeCounter.
+  category: accounts-and-balances
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateBalanceTypeCounter
+  arguments:
+  - 'input: UpdateBalanceTypeCounterInput!'
+  returns: BalanceTypeCounterResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: update_client_credentials
+  description: Updates the Client credentials.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateClientCredentials
+  arguments:
+  - 'providerId: ID!'
+  - 'clientId: ID!'
+  - 'input: UpdateClientCredentialsInput!'
+  returns: UpdateClientCredentialsResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: update_device
+  description: Updates Device attributes.
+  category: devices
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateDevice
+  arguments:
+  - 'input: UpdateDeviceInput!'
+  returns: UpdateDeviceResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_field_mapping
+  description: Updates a Field Mapping in draft. Draft field mappings need to be deployed using deployFieldMappings
+    to become effective.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateFieldMapping
+  arguments:
+  - 'input: UpdateFieldMappingInput!'
+  returns: UpdateFieldMappingResult!
+  authorized_roles:
+  - Network_Operator
+  mutating: true
+- name: update_lifecycle
+  description: Updates a lifecycle.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateLifecycle
+  arguments:
+  - 'input: UpdateLifecycleInput!'
+  returns: UpdateLifecycleResult
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: update_my_provider_config
+  description: Updates config of the current tenant.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateMyProviderConfig
+  arguments:
+  - 'input: UpdateMyProviderConfigInput!'
+  returns: UpdateMyProviderConfigResult!
+  authorized_roles:
+  - Tenant_Admin
+  - Network_Admin
+  mutating: true
+- name: update_plan
+  description: Updates attributes of a Plan , such as name. This mutation is reserved for the upcoming
+    Rate Anything capability, enabling customers to configure rates based on any attribute from the network
+    message or subscriber databa
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updatePlan
+  arguments:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+  - 'input: UpdatePlanInput!'
+  returns: UpdatePlanResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: update_plan_subscription
+  description: 'Updates the properties of a Plan instance subscribed by an Account or switches the subscription
+    to a different plan. Plan Switching: If planId or planVersionId is specified, the subscription will
+    be switched to the corre'
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updatePlanSubscription
+  arguments:
+  - 'input: UpdatePlanSubscriptionInput!'
+  returns: UpdatePlanVersionSubscriptionResult!
+  authorized_roles:
+  - Account_Admin
+  mutating: true
+- name: update_plan_version_from_initial_recurring_first_usage_template
+  description: Updates a plan that was created by using a template.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updatePlanVersionFromInitialRecurringFirstUsageTemplate
+  arguments:
+  - 'input: UpdatePlanVersionFromInitialRecurringFirstUsageTemplateInput!'
+  returns: UpdatePlanVersionFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: update_plan_version_from_initial_template
+  description: Updates Plan Version of a Plan that was originally created by using a template.
+  category: plans-and-subscriptions
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updatePlanVersionFromInitialTemplate
+  arguments:
+  - 'input: UpdatePlanVersionFromInitialTemplateInput!'
+  returns: UpdatePlanVersionFromInitialTemplateResult!
+  authorized_roles:
+  - Plan_Designer
+  mutating: true
+- name: update_policy_counter
+  description: Updates a Policy Counter for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updatePolicyCounter
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  - 'input: PolicyCounterInput!'
+  returns: UpdatePolicyCounterResult!
+  authorized_roles:
+  - Plan_Admin
+  mutating: true
+- name: update_qo_s_profile
+  description: Updates a QoS Profile for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateQoSProfile
+  arguments:
+  - 'providerId: ID!'
+  - 'id: ID!'
+  - 'input: QoSProfileInput!'
+  returns: UpdateQoSProfileResult!
+  authorized_roles:
+  - Network_Admin
+  mutating: true
+- name: update_rating_group_hierarchy
+  description: Updates and deploys after verifying Rating Group hierarchy.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateRatingGroupHierarchy
+  arguments:
+  - 'input: UpdateRatingGroupHierarchyInput!'
+  returns: UpdateRatingGroupHierarchyResult!
+  authorized_roles:
+  - Network_Admin
+  mutating: true
+- name: update_s_g_s_n_table
+  description: Update the SGSN table for a provider.
+  category: policy-and-network
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateSGSNTable
+  arguments:
+  - 'input: UpdateSGSNTableInput!'
+  returns: UpdateSGSNTableResult!
+  authorized_roles:
+  - Network_Operator
+  mutating: true
+- name: update_settings
+  description: Updates settings of a provider.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateSettings
+  arguments:
+  - 'input: UpdateSettingsInput!'
+  returns: UpdateSettingsResult!
+  authorized_roles:
+  - Plan_Admin
+  - Network_Admin
+  mutating: true
+- name: update_user
+  description: Updates a specific User for a given tenant. It returns the updated user or an error.
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateUser
+  arguments:
+  - 'input: UpdateUserInput!'
+  returns: UpdateUserResult!
+  authorized_roles:
+  - Tenant_Admin
+  mutating: true
+- name: update_user_profile
+  description: Updates user profile for current User .
+  category: tenant-administration
+  operation_kind: mutation
+  source_operation: graphql/totogi-charging-as-a-service.graphql#mutation.updateUserProfile
+  arguments:
+  - 'input: UpdateUserProfileInput!'
+  returns: UpdateUserProfileResult!
+  authorized_roles:
+  - All
+  mutating: true

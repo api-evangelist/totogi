@@ -11,7 +11,18 @@ review:
   gated: true
   portalConfirmed: false
   openapiHarvested: false
-  specsCount: 0
+  specsCount: 1
+  specKinds: [GraphQL]
+  revised: '2026-07-25'
+  revisionNote: >-
+    CORRECTION. The first pass concluded Totogi published no machine-readable contract. That was
+    wrong. A fully public GraphQL reference for Totogi Charging-as-a-Service is live at
+    https://docs.api.totogi.com/ (SpectaQL, regenerated 2026-07-23T22:13:14Z) publishing 32
+    queries, 61 mutations and 480 type definitions with per-operation authorization roles. It
+    was missed because the first pass probed only totogi.com, totogi.solutions and the
+    whoosh/docs hosts — docs.api.totogi.com sits under a subdomain of api.totogi.com, whose
+    apex does not resolve, so no host-walk from totogi.com reaches it. The schema is captured in
+    graphql/totogi-charging-as-a-service.graphql. There is still no OpenAPI anywhere.
 findings:
   summary: |
     Totogi LLC (Austin, Texas) is a vertical-AI BSS/OSS software vendor selling to
@@ -176,7 +187,31 @@ findings:
     url: https://github.com/totogi/whoosh-java-releases
     note: Standalone JAR, no Maven Central coordinate found.
   graphql:
-    found: false
+    found: true
+    correctedOn: '2026-07-25'
+    docs: https://docs.api.totogi.com/
+    generator: SpectaQL
+    schemaGeneratedAt: '2026-07-23T22:13:14Z'
+    endpoints:
+    - https://gql.produseast1.api.totogi.com/graphql
+    - https://gql.prodapsoutheast1.api.totogi.com/graphql
+    - https://api.totogi.io/graphql
+    legacyDocs: https://apis.totogi.solutions/ccab/
+    legacyEndpoint: https://api.ccab.totogi.com/graphql
+    queries: 32
+    mutations: 61
+    typeDefinitions: 480
+    subscriptions: 0
+    introspection: gated
+    introspectionEvidence: >-
+      POST {__schema{queryType{name}}} to https://api.totogi.io/graphql returns HTTP 401
+      UnauthorizedException "Valid authorization header not provided." — the AWS AppSync
+      signature. The live schema cannot be introspected anonymously, but the full documented
+      schema is public, so the SDL in graphql/totogi-charging-as-a-service.graphql was
+      reconstructed from the rendered reference rather than from introspection.
+    note: >-
+      The first pass recorded graphql.found=false. That was a miss, not an absence — see
+      review.revisionNote.
   grpc:
     found: false
   postman:
@@ -274,6 +309,38 @@ probes:
   status: 200
   note: Returns the Redocly login page, NOT a specification. Does not parse as
     OpenAPI.
+- url: https://docs.api.totogi.com/
+  status: 200
+  note: 'ADDED 2026-07-25. Public SpectaQL GraphQL reference for Charging-as-a-Service —
+    32 queries, 61 mutations, 480 type definitions. The contract the first pass missed.'
+- url: https://docs.api.totogi.com/openapi.json
+  status: 403
+  note: 'No spec file is served; the reference is the rendered HTML itself.'
+- url: https://apis.totogi.solutions/ccab/
+  status: 200
+  note: 'Older SpectaQL build of the same reference, unresolved ${DOCS_VERSION} placeholder,
+    endpoint api.ccab.totogi.com/graphql.'
+- url: https://api.totogi.io/graphql
+  status: 401
+  note: 'Live AWS AppSync GraphQL endpoint. Introspection is auth-gated
+    (UnauthorizedException). Found in Totogi''s own github.com/totogi/marketplace-api-demo.'
+- url: https://oauth.totogi.io/oauth2/token
+  status: 500
+  note: 'OAuth 2.0 client-credentials token endpoint, from Totogi''s published demo client.
+    Anonymous POST without a client assertion returns 500; /.well-known/* returns 403.'
+- url: https://5g.produseast1.api.totogi.com
+  status: 403
+  note: 'Live 3GPP TS 32.291 Nchf_ConvergedCharging v3 host
+    (/nchf-convergedcharging/v3/chargingData), from github.com/totogi/totogi-charging-proxy.'
+- url: https://5g.prodapsoutheast1.api.totogi.com
+  status: 403
+  note: Singapore counterpart of the converged-charging host.
+- url: https://emulator.totogidemos.com
+  status: 200
+  note: 'Totogi Charging Emulator — the only public hands-on surface for the charging APIs.'
+- url: https://support.ccab.totogi.com
+  status: 200
+  note: 'Cloud Charging and Billing support portal, linked from the API reference.'
 - url: https://www.tmforum.org/conformance-certification/open-api-conformance/
   status: 403
   note: TM Forum blocks anonymous programmatic fetch; per-API certification list not

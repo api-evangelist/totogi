@@ -1,0 +1,125 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.api.totogi.com/
+note: >-
+  Totogi's standards posture is entirely TM Forum and 3GPP. It holds a real, attested TM Forum
+  certification and implements named 3GPP service-based interfaces. It conforms to none of the
+  web-API conventions the rest of the catalog is measured against — no OpenAPI, no RFC 9457,
+  no OIDC discovery — because its public contract is GraphQL.
+standards:
+- id: tmforum-open-api-conformance
+  conforms: true
+  level: Platinum Open API Conformance Certification
+  certified_api_count: 31
+  evidence: >-
+    Totogi announced Platinum certification and a #1 ranking on the TM Forum Open API
+    Certification Leaderboard on 13 September 2021, reaching Platinum (20+ conformant Open APIs)
+    four months after its first certification in June 2021, and announced nine further certified
+    Open APIs on 22 September 2021 for a total of 31. TM Forum CTO George Glass is quoted in the
+    release. Totogi links the TM Forum conformance directory from its own site as a badge.
+  docs: https://www.tmforum.org/conformance-certification/open-api-conformance/
+  caveat: >-
+    Totogi does not publish the individual TMF numbers it is certified against, only the
+    aggregate of 31 and the Platinum level, and the TM Forum directory returns HTTP 403 to
+    anonymous programmatic fetch, so the per-API list is not independently enumerable.
+- id: tmforum-oda
+  conforms: partial
+  evidence: >-
+    Totogi markets the Totogi Ontology as operationalising TM Forum ODA and 3GPP canonical models
+    into executable semantics across BSS, OSS and network domains. A published case study
+    describes CloudSense certifying 13 TM Forum Open APIs in 30 days using it.
+  docs: https://totogi.com/telco-ontology/
+- id: 3gpp-ts-32.291-nchf-converged-charging
+  conforms: true
+  version: v3
+  interface: N40
+  evidence: >-
+    Totogi's own published proxy (github.com/totogi/totogi-charging-proxy) forwards to
+    https://5g.produseast1.api.totogi.com/nchf-convergedcharging/v3/chargingData and
+    https://5g.prodapsoutheast1.api.totogi.com/nchf-convergedcharging/v3/chargingData over
+    HTTP/2, which is the 3GPP TS 32.291 Nchf_ConvergedCharging resource path. Both hosts are
+    live and return 403 to anonymous requests.
+  docs: https://www.totogi.com/how-to-guides/build-a-charging-emulator-demo-app-using-totogi-apis/
+- id: 3gpp-npcf-smpolicycontrol
+  conforms: true
+  interface: N7 (PCF-SMF), Service Based Interface over HTTP/2 + JSON
+  evidence: >-
+    Published in the 15 April 2026 Built-in Lightweight Policy Management product update:
+    "5G (SBI) -> Npcf_SMPolicyControl (PCF–SMF): session policy control".
+  docs: https://totogi.com/ai-native-charging/caas-product-updates/
+- id: 3gpp-gx-diameter
+  conforms: true
+  interface: Gx (PCRF-PCEF)
+  evidence: 'Published product update: "4G (Diameter) -> Gx (PCRF–PCEF) via the built-in Diameter adapter".'
+  docs: https://totogi.com/ai-native-charging/caas-product-updates/
+- id: 3gpp-sy-and-n28
+  conforms: true
+  evidence: >-
+    Charging-as-a-Service integrates with external policy management over the 4G/5G NSA Sy
+    (PCRF) interface and the 5G SA N28 (PCF) interface; the built-in policy module uses an
+    internal N28-like interface to CHF.
+  docs: https://totogi.com/ai-native-charging/
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: >-
+    Token endpoint https://oauth.totogi.io/oauth2/token, grant_type=client_credentials with
+    HTTP Basic client authentication, per Totogi's published marketplace-api-demo.
+- id: graphql
+  conforms: true
+  evidence: >-
+    Charging-as-a-Service is a GraphQL API served by AWS AppSync; the full type system, 32
+    queries and 61 mutations are published at docs.api.totogi.com and captured in
+    graphql/totogi-charging-as-a-service.graphql.
+- id: relay-cursor-connections
+  conforms: true
+  evidence: 'Paginated queries use first/after with Connection types and a PageInfo type.'
+- id: twilio-2010-04-01-compatibility
+  conforms: true
+  scope: Whoosh Programmable Messaging API
+  evidence: >-
+    Whoosh reproduces the Twilio 2010-04-01 account/resource shape, the Account SID + Auth Token
+    Basic-auth model and the StatusCallback webhook contract, and is marketed by Totogi as a
+    "plug-and-play replacement for Twilio APIs".
+  docs: https://totogi.com/newsroom/press-releases/replacement-for-twilio-a2p-apis-for-network-operators/
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document is retrievable from any Totogi-owned host. Probed
+    /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs and /redoc against
+    api.whoosh.totogi.solutions, docs.whoosh.totogi.solutions, totogi.com, totogi.solutions and
+    docs.totogi.solutions on 2026-07-25 — all 404 except the Redocly login wall, which answers
+    200 with HTML to every path.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors are GraphQL result-union members, not application/problem+json.'
+- id: openid-connect
+  conforms: false
+  evidence: 'No /.well-known/openid-configuration on any host; oauth.totogi.io returns 403.'
+- id: rfc8414-authorization-server-metadata
+  conforms: false
+  evidence: 'https://oauth.totogi.io/.well-known/oauth-authorization-server returns 403.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: 'No /.well-known/security.txt on any Totogi host.'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header is documented. Deprecation is instead carried in-schema, with
+    an explicit deprecated date and expiration date in every @deprecated reason.
+- id: asyncapi
+  conforms: false
+  evidence: 'No AsyncAPI document published; the only event surface is the Whoosh StatusCallback webhook.'
+- id: camara
+  conforms: false
+  evidence: >-
+    Zero mentions of CAMARA, GSMA Open Gateway or Aduna across Totogi's own canonical AI index
+    (llms.txt, llms-full.txt, facts.json, evidence.json, glossary.json, case-studies.json) or
+    anywhere on the marketing site.
+compliance_program:
+  certifications_published: [TM Forum Open API Conformance Certification (Platinum, 31 APIs)]
+  security_certifications_published: []
+  note: >-
+    Totogi publishes a genuine third-party API conformance certification but NO security or
+    privacy compliance posture — no SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim appears on
+    any Totogi host, and trust.totogi.com, security.totogi.com, /trust, /security and /compliance
+    were all probed on 2026-07-25 and do not exist.

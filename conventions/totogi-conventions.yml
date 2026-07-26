@@ -1,0 +1,121 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.api.totogi.com/
+derived_from: graphql/totogi-charging-as-a-service.graphql
+scope: >-
+  Cross-cutting request/response semantics for the Totogi Charging-as-a-Service GraphQL API,
+  read from the public reference and the reconstructed schema. The Whoosh messaging API is a
+  separate surface with Twilio-inherited conventions and is captured at the end.
+authentication:
+  style: OAuth 2.0 client-credentials bearer token
+  authorization: named roles published per operation
+  artifact: authentication/totogi-authentication.yml
+idempotency:
+  supported: true
+  mechanism: caller-supplied transaction id
+  parameter: transactionId
+  location: mutation input object
+  type: ID
+  required: false
+  server_generated_when_absent: true
+  conflict_error: TransactionHasBeenProcessed
+  description: >-
+    Totogi CaaS implements idempotency as a first-class, documented contract on its mutations.
+    Balance and account mutations accept an optional transactionId in the input; replaying a
+    mutation with a transactionId the platform has already seen returns the typed error
+    TransactionHasBeenProcessed (which itself carries providerId and transactionId) instead of
+    applying the change twice. When the caller omits transactionId, Totogi generates one and
+    returns it on the payload so the transaction can still be correlated with upstream systems.
+  evidence:
+  - >-
+    CreateBalanceInput.transactionId — "An optional transaction ID to ensure idempotency of the
+    API call, allowing for transaction correlation between Totogi and upstream systems. If not
+    provided, Totogi automatically generates a unique identifier for each transaction"
+  - >-
+    BalancePayload.transactionId — "The transaction ID returned as a result of the createBalance
+    API call. This ID ensures idempotency and allows for the correlation of transactions between
+    Totogi and upstream systems."
+  - >-
+    TransactionHasBeenProcessed is a member of the CreateAccount, CreateBalance, DeleteAccount,
+    UpdateAccount and UpdateBalance result unions.
+  retention: not published
+pagination:
+  style: relay-cursor-connections
+  request_params: [first, after]
+  response_shape: Connection with edges/nodes and pageInfo
+  page_info_type: PageInfo
+  applies_to:
+  - getEventDataRecordsByAccount
+  - getEventDataRecordsByDevice
+  - getDeployedFieldMappings
+  - getFieldMappings
+  note: >-
+    first is non-null (Int!) on the paginated queries — the caller must always state a page size.
+error_handling:
+  style: errors-as-data
+  transport_status: 200
+  contract: >-
+    Every operation returns a result UNION whose members are the success payload plus each typed
+    error it can raise, so failures are part of the schema rather than a stringly-typed errors
+    array. Clients inline-fragment on the error members they handle.
+  interface: {name: Error, fields: [errorCode, errorMessage]}
+  error_type_count: 68
+  artifact: errors/totogi-error-catalog.yml
+rate_limiting:
+  signalled: true
+  mechanism: typed GraphQL error
+  error_type: RateLimitExceeded
+  retry_field: retryAfter
+  retry_field_type: AWSDateTime
+  coverage: member of 70 of the 87 result unions
+  published_limits: none
+  note: >-
+    Totogi signals throttling in-band and machine-readably — RateLimitExceeded carries a
+    retryAfter timestamp a client can back off against — but publishes no numeric quota,
+    burst rate or plan-tier limit anywhere public.
+multi_tenancy:
+  tenant_key: providerId
+  required: true
+  note: >-
+    providerId is the mandatory first argument on effectively every operation and the partition
+    key of the entire data model. A tenant whose provisioning state is wrong gets the typed error
+    InvalidProviderLifecycleStage, which is a member of 52 result unions.
+  lifecycle_error: InvalidProviderLifecycleStage
+extensibility:
+  mechanism: customProperties
+  type: AWSJSON
+  validation: >-
+    Validated on write against the provider's own declared customAccountProperties schema.
+    Undeclared keys raise InvalidField(UndeclaredCustomProperty); wrong runtime types raise
+    InvalidField(CustomPropertyTypeMismatch).
+  usable_in: Rate Anything expressions as account.custom.<name>
+  supersedes: customData (schemaless, deprecated 2026-05-26, expires 2026-07-26)
+feature_flags:
+  error_type: FeatureNotEnabled
+  fields: [providerId, featureName]
+  note: Capabilities are enabled per tenant; calling a disabled one returns a typed error naming it.
+versioning:
+  scheme: unversioned GraphQL endpoint, additive schema change
+  deprecation: field-level @deprecated carrying explicit deprecated and expiration dates
+  artifact: lifecycle/totogi-lifecycle.yml
+regions:
+  note: The endpoint is region-pinned; there is one GraphQL URL per deployment region.
+  endpoints:
+  - {region: us-east-1, url: 'https://gql.produseast1.api.totogi.com/graphql'}
+  - {region: ap-southeast-1, url: 'https://gql.prodapsoutheast1.api.totogi.com/graphql'}
+request_tracing:
+  request_id_header: not published
+  correlation: transactionId (see idempotency) is the documented correlation key to upstream systems
+whoosh_messaging_conventions:
+  api: Whoosh Programmable Messaging API
+  auth: HTTP Basic, AccountSid as username and AuthToken as password
+  resource_shape: /2010-04-01/Accounts/{AccountSid}/Messages.json
+  versioning: date-in-path (2010-04-01), inherited verbatim from Twilio
+  content_type: application/x-www-form-urlencoded request, JSON response
+  parameters:
+  - {name: To, note: "destination number, '+' and country code, e.g. +16175551212"}
+  - {name: From, note: 'Whoosh number, short code or Messaging Service in E.164 format'}
+  - {name: Body, note: 'full message text, limited to 1600 characters'}
+  - {name: StatusCallback, note: 'URL Whoosh POSTs delivery status changes to'}
+  idempotency: not documented
+  events: asyncapi/totogi-whoosh-webhooks.yml

@@ -1,0 +1,38 @@
+generated: '2026-07-25'
+method: generated
+source: https://docs.api.totogi.com/
+api: graphql/totogi-charging-as-a-service.graphql
+note: >-
+  Agent Skills for the Totogi Charging-as-a-Service GraphQL API. Every operation named in every
+  skill was verified against the schema in graphql/totogi-charging-as-a-service.graphql, which
+  was itself reconstructed from Totogi's public SpectaQL reference. No operation, argument, role
+  or error type in these skills is invented. Totogi publishes no AGENTS.md or first-party skill
+  files — these are API Evangelist generations grounded in the published contract.
+skills:
+- file: totogi-provision-subscriber.md
+  name: Provision a Totogi subscriber and put them on a plan
+  api: graphql/totogi-charging-as-a-service.graphql
+  operations: [createAccount, createDevice, subscribeToPlan, getAccount, getDevice]
+  roles: [Account_Admin, Account_Query]
+- file: totogi-manage-balances.md
+  name: Top up and adjust Totogi account balances idempotently
+  api: graphql/totogi-charging-as-a-service.graphql
+  operations: [createBalance, updateBalance, deleteBalance, getAccount, getAccountBalanceTypeCounters]
+  roles: [Account_Admin, Account_Query]
+- file: totogi-design-and-deploy-plan.md
+  name: Design, deploy and make a Totogi rate plan assignable
+  api: graphql/totogi-charging-as-a-service.graphql
+  operations: [createPlan, createPlanFromInitialTemplate, createPlanVersionFromInitialTemplate,
+    deployPlan, makePlanAssignable, getPlan, getPlans, getPlanVersion, archivePlanVersion]
+  roles: [Plan_Designer, Plan_Publisher, Plan_Query]
+- file: totogi-page-usage-records.md
+  name: Page through Totogi event data records (EDRs)
+  api: graphql/totogi-charging-as-a-service.graphql
+  operations: [getEventDataRecordsByAccount, getEventDataRecordsByDevice, exportCustomerDB, getMyRestoreJobs]
+  roles: [Data_Admin, Product_Admin, System_Admin]
+- file: totogi-manage-api-clients.md
+  name: Manage Totogi API client credentials
+  api: graphql/totogi-charging-as-a-service.graphql
+  operations: [createClientCredentials, getClientCredentials, listAllClientCredentials,
+    updateClientCredentials, deleteClientCredentials]
+  roles: [Tenant_Admin]

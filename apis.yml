@@ -3,24 +3,26 @@ url: https://raw.githubusercontent.com/api-evangelist/totogi/refs/heads/main/api
 name: Totogi
 kind: company
 description: >-
-  Totogi LLC is an Austin, Texas based vertical AI and BSS software vendor
-  that builds telecom operator software natively on the public cloud (AWS). Its two
-  products are the Totogi Ontology (formerly BSS Magic), a machine-readable semantic
-  layer that sits above a carrier's existing BSS, OSS, core, and network systems so
-  AI agents can reason and act across them, and Totogi Charging-as-a-Service, a
-  multi-tenant, serverless 5G Standalone converged charging system with built-in
-  policy control that integrates over the 4G/5G NSA Sy (PCRF) and 5G SA N28 (PCF)
-  interfaces. Totogi sits in the telecom value chain as a vendor to communications
-  service providers, MNOs, MVNOs, and MVNEs — it does not own spectrum and it does
-  not sell to developers directly. Its API posture is split. Totogi holds TM Forum
-  Platinum Open API Conformance Certification for 31 certified Open APIs and once
-  ranked #1 on the TM Forum Open API Certification Leaderboard, but the platform's
-  own API reference at docs.totogi.solutions is a Redocly login wall with no public
-  specification, no self-serve signup, and no downloadable OpenAPI. The one genuinely
-  public developer surface is Whoosh!, a Twilio-compatible A2P messaging API Totogi
-  sells through operators rather than to developers, with open quickstart docs, a
-  live API host, and four published helper libraries. No CAMARA, GSMA Open Gateway,
-  or Aduna reference appears anywhere in Totogi's own canonical AI index.
+  Totogi LLC is an Austin, Texas based vertical AI and BSS software vendor that builds
+  telecom operator software natively on the public cloud (AWS). Its two products are the
+  Totogi Ontology (formerly BSS Magic), a machine-readable semantic layer that sits above a
+  carrier's existing BSS, OSS, core, and network systems so AI agents can reason and act
+  across them, and Totogi Charging-as-a-Service, a multi-tenant, serverless 5G Standalone
+  converged charging system with built-in policy control that integrates over the 4G/5G NSA
+  Sy (PCRF), 5G SA N28 (PCF), Npcf_SMPolicyControl (N7) and Gx interfaces, and implements the
+  3GPP TS 32.291 Nchf_ConvergedCharging v3 (N40) resource surface. Totogi sits in the telecom
+  value chain as a vendor to communications service providers, MNOs, MVNOs, and MVNEs — it
+  does not own spectrum and it does not sell to developers directly. Its API posture is split
+  three ways. Charging-as-a-Service is a fully public GraphQL contract: a SpectaQL reference
+  at docs.api.totogi.com publishes 32 queries, 61 mutations and 480 type definitions, with
+  per-operation named authorization roles, typed result-union errors, caller-supplied
+  transaction ids for idempotency, and dated field deprecations. Whoosh! is a Twilio-compatible
+  A2P messaging API sold through operators, with open quickstarts, a live API host and four
+  published helper libraries. The platform's other reference at docs.totogi.solutions is a
+  Redocly login wall, and there is no self-serve signup anywhere. Totogi holds TM Forum
+  Platinum Open API Conformance Certification for 31 certified Open APIs and once ranked #1 on
+  the TM Forum Open API Certification Leaderboard. No CAMARA, GSMA Open Gateway, or Aduna
+  reference appears anywhere in Totogi's own canonical AI index.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Telecommunications
@@ -36,25 +38,79 @@ tags:
 - Standards
 - Network Vendor
 - Vertical AI
+- GraphQL
+- Policy Control
 created: '2026-07-25'
 modified: '2026-07-25'
 specificationVersion: '0.19'
 apis:
+- aid: totogi:totogi-charging-as-a-service
+  name: Totogi Charging-as-a-Service API
+  description: >-
+    Totogi Charging-as-a-Service is a serverless, multi-tenant 5G Standalone and 5G Advanced
+    converged charging system delivered as SaaS on AWS, with built-in policy control. Its
+    account-management surface is a GraphQL API — served by AWS AppSync, region-pinned, and
+    fully documented in public at docs.api.totogi.com — useful for querying balances and event
+    data records, provisioning subscribers and devices, subscribing accounts to plans, and
+    managing tenant configuration. The published contract carries 32 queries, 61 mutations and
+    480 type definitions, and it is unusually explicit about runtime semantics: every operation
+    states its authorized roles, every operation returns a result union whose members are the
+    success payload plus each typed error it can raise (68 error types implementing a common
+    Error interface with errorCode/errorMessage), mutations accept a caller-supplied
+    transactionId to guarantee idempotency, RateLimitExceeded carries a retryAfter timestamp,
+    and deprecated fields publish both a deprecated date and an expiration date. Access is
+    OAuth 2.0 client-credentials only; there is no self-serve signup and no sandbox.
+  humanURL: https://docs.api.totogi.com/
+  baseURL: https://gql.produseast1.api.totogi.com/graphql
+  tags:
+  - Charging
+  - BSS
+  - 5G
+  - GraphQL
+  - TM Forum
+  - Policy Control
+  - Telecommunications
+  properties:
+  - type: GraphQL
+    url: graphql/totogi-charging-as-a-service.graphql
+  - type: APIReference
+    url: https://docs.api.totogi.com/
+  - type: Documentation
+    url: https://totogi.com/ai-native-charging/
+  - type: GettingStarted
+    url: https://www.totogi.com/how-to-guides/build-a-charging-emulator-demo-app-using-totogi-apis/
+  - type: Demo
+    url: https://emulator.totogidemos.com
+  - type: Support
+    url: https://support.ccab.totogi.com
+  - type: ChangeLog
+    url: https://totogi.com/ai-native-charging/caas-product-updates/
+  - type: Conformance
+    url: https://www.tmforum.org/conformance-certification/open-api-conformance/
+  - type: Marketplace
+    url: https://aws.amazon.com/marketplace/pp/prodview-hnaq62hzpxane
+  - type: APIReference
+    url: https://apis.totogi.solutions/ccab/
+    name: Legacy SpectaQL reference (api.ccab.totogi.com/graphql)
+  regions:
+  - region: us-east-1
+    baseURL: https://gql.produseast1.api.totogi.com/graphql
+  - region: ap-southeast-1
+    baseURL: https://gql.prodapsoutheast1.api.totogi.com/graphql
 - aid: totogi:whoosh-programmable-messaging-api
   name: Whoosh Programmable Messaging API
   description: >-
-    Whoosh! is Totogi's Application-to-Person (A2P) messaging API, launched
-    in September 2023 and positioned as a drop-in replacement for Twilio's A2P APIs
-    that network operators can resell to keep enterprise messaging traffic and revenue
-    on their own network. The REST surface deliberately mirrors Twilio's 2010-04-01
-    account/resource shape — POST to /2010-04-01/Accounts/{AccountSid}/Messages.json
-    with To, From, and Body — and authenticates with HTTP Basic using an Account SID
-    and Auth Token issued from the Whoosh console. Delivery status is pushed back
-    via a StatusCallback webhook that POSTs on queued, failed, sent, delivered, and
-    undelivered. Quickstart documentation is public and un-gated; the console that
-    issues credentials is not, and there is no self-serve signup.
+    Whoosh! is Totogi's Application-to-Person (A2P) messaging API, launched in September 2023
+    and positioned as a drop-in replacement for Twilio's A2P APIs that network operators can
+    resell to keep enterprise messaging traffic and revenue on their own network. The REST
+    surface deliberately mirrors Twilio's 2010-04-01 account/resource shape — POST to
+    /2010-04-01/Accounts/{AccountSid}/Messages.json with To, From, and Body (1600 characters
+    max) — and authenticates with HTTP Basic using an Account SID and Auth Token issued from
+    the Whoosh console. Delivery status is pushed back via a StatusCallback webhook that POSTs
+    on queued, failed, sent, delivered, and undelivered. Quickstart documentation is public and
+    un-gated; the console that issues credentials is not, and there is no self-serve signup.
   humanURL: https://docs.whoosh.totogi.solutions
-  baseURL: https://api.whoosh.totogi.solutions/2010-04-01/Accounts/
+  baseURL: https://api.whoosh.totogi.solutions
   tags:
   - Messaging
   - SMS
@@ -66,16 +122,10 @@ apis:
     url: https://docs.whoosh.totogi.solutions
   - type: APIReference
     url: https://docs.whoosh.totogi.solutions/send_message
-  - type: Documentation
-    url: https://docs.whoosh.totogi.solutions/monitor_message_status
-  - type: Documentation
+  - type: GettingStarted
     url: https://docs.whoosh.totogi.solutions/node
-  - type: Documentation
-    url: https://docs.whoosh.totogi.solutions/python
-  - type: Documentation
-    url: https://docs.whoosh.totogi.solutions/java
-  - type: Documentation
-    url: https://docs.whoosh.totogi.solutions/ruby
+  - type: Webhooks
+    url: asyncapi/totogi-whoosh-webhooks.yml
   - type: Console
     url: https://console.whoosh.totogi.solutions
   - type: SDK
@@ -88,38 +138,6 @@ apis:
     url: https://github.com/totogi/whoosh-java-releases
   - type: Announcement
     url: https://totogi.com/newsroom/press-releases/replacement-for-twilio-a2p-apis-for-network-operators/
-- aid: totogi:totogi-charging-as-a-service
-  name: Totogi Charging-as-a-Service
-  description: >-
-    Totogi Charging-as-a-Service is a serverless, multi-tenant 5G Standalone
-    and 5G Advanced converged charging system delivered as SaaS on AWS, with built-in
-    policy control and a single account management API across tenants. It integrates
-    with external policy management over the 4G/5G NSA Sy (PCRF) and 5G SA N28 (PCF)
-    interfaces, and Totogi's BSS surface is built on TM Forum Open APIs, for which
-    Totogi holds Platinum Conformance Certification across 31 certified Open APIs.
-    The product's API reference is published on a Redocly-hosted portal at
-    docs.totogi.solutions that returns a "Log in with Redocly" wall to anonymous
-    visitors — no specification, endpoint list, or base URL is publicly retrievable,
-    and access is arranged through a sales demo. Listed here as a real, named,
-    documented-behind-a-wall API product, not as a public developer surface.
-  humanURL: https://totogi.com/ai-native-charging/
-  tags:
-  - Charging
-  - BSS
-  - 5G
-  - TM Forum
-  - Policy Control
-  properties:
-  - type: Documentation
-    url: https://totogi.com/ai-native-charging/
-  - type: APIReference
-    url: https://docs.totogi.solutions
-  - type: Documentation
-    url: https://totogi.com/ai-native-charging/caas-product-updates/
-  - type: Conformance
-    url: https://www.tmforum.org/conformance-certification/open-api-conformance/
-  - type: Marketplace
-    url: https://aws.amazon.com/marketplace/pp/prodview-hnaq62hzpxane
 common:
 - type: Website
   url: https://totogi.com
@@ -135,6 +153,8 @@ common:
   url: https://totogi.com/newsroom/press-releases/
 - type: CaseStudies
   url: https://totogi.com/resources/case-studies/
+- type: Support
+  url: https://support.ccab.totogi.com
 - type: GitHubOrganization
   url: https://github.com/totogi
 - type: LinkedIn
@@ -149,12 +169,46 @@ common:
   url: https://totogi.com/privacy/
 - type: LLMsTxt
   url: https://totogi.com/llms.txt
+- type: LLMsTxt
+  url: llms/totogi-llms.txt
+  name: Harvested copy of totogi.com/llms.txt
 - type: Facts
   url: https://totogi.com/facts.json
 - type: Evidence
   url: https://totogi.com/evidence.json
 - type: Glossary
   url: https://totogi.com/glossary.json
+- type: Packages
+  url: packages/totogi-packages.yml
+- type: SDKs
+  url: packages/totogi-packages.yml
+- type: Authentication
+  url: authentication/totogi-authentication.yml
+- type: OAuthScopes
+  url: scopes/totogi-scopes.yml
+- type: Conventions
+  url: conventions/totogi-conventions.yml
+- type: Idempotency
+  url: conventions/totogi-conventions.yml
+- type: ErrorCatalog
+  url: errors/totogi-error-catalog.yml
+- type: DataModel
+  url: data-model/totogi-data-model.yml
+- type: Lifecycle
+  url: lifecycle/totogi-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/totogi-lifecycle.yml
+- type: ChangeLog
+  url: changelog/totogi-changelog.yml
+- type: Conformance
+  url: conformance/totogi-conformance.yml
+- type: Compliance
+  url: conformance/totogi-conformance.yml
+  name: TM Forum Platinum Open API Conformance Certification (31 certified Open APIs)
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/totogi-domain-security.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

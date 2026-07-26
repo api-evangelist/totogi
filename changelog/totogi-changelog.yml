@@ -1,0 +1,57 @@
+generated: '2026-07-25'
+method: searched
+source: https://totogi.com/ai-native-charging/caas-product-updates/
+scheme: dated-product-updates
+current_version: 'GraphQL schema reference generated 2026-07-23T22:13:14Z'
+note: >-
+  Totogi maintains a real dated product-update log for Charging-as-a-Service, tagged by area
+  (API, charging engine, export, help center, monitoring, notifications, plan design, text
+  feature, usability, voice feature). It is a product changelog rather than an API changelog —
+  entries describe capabilities, not schema diffs — so the machine-readable record of breaking
+  change lives in the GraphQL schema's dated @deprecated markers instead
+  (see lifecycle/totogi-lifecycle.yml).
+categories: [API, charging engine, export, help center, monitoring, notifications, plan design,
+  text feature, usability, voice feature]
+entries:
+- date: '2026-04-15'
+  title: Built-in Lightweight Policy Management
+  category: charging engine
+  breaking: false
+  highlights:
+  - Adds native 5G policy control (PCF) over Npcf_SMPolicyControl (N7) and 4G policy control (PCRF) over Gx via a built-in Diameter adapter.
+  - Evolves CaaS from an OCS/CHF into a converged Charging + Policy solution with no external PCF/PCRF dependency.
+  - Session-level QoS negotiation, event-driven dynamic policy updates, policy event exposure.
+  - Policy rules are configured in Plan Design; charging counters behave as if the PCF were integrated over N28.
+- date: '2026-03-11'
+  title: 'Rate Anything: faster plan innovation and greater charging flexibility'
+  category: charging engine
+  breaking: false
+- date: '2025-09-16'
+  title: Integrated Dashboard now available in Plan Design
+  category: plan design
+  breaking: false
+- date: '2025-08-27'
+  title: Subscriber Lifecycle Management
+  category: charging engine
+  breaking: false
+- date: '2025-05-13'
+  title: 'Customer DB Exports: daily customer data in your AWS account'
+  category: export
+  breaking: false
+  note: Corresponds to the exportCustomerDB mutation and the getMyRestoreJobs query in the schema.
+- date: '2025-03-05'
+  title: Single Sign-On (SSO) support in Plan Design
+  category: usability
+  breaking: false
+- date: '2025-01-29'
+  title: MMS rating support for 4G and 5G
+  category: charging engine
+  breaking: false
+- date: '2024-12-17'
+  title: 'Happy CaaSmas: wrapping up a year of Totogi magic'
+  category: charging engine
+  breaking: false
+other_change_surfaces:
+- {name: Newsroom / press releases, url: 'https://totogi.com/newsroom/press-releases/'}
+- {name: Blog, url: 'https://totogi.com/blog/'}
+- {name: Product updates (all products), url: 'https://totogi.com/product-updates/', note: 'robots.txt restricts traditional search crawlers from this path but permits AI crawlers.'}

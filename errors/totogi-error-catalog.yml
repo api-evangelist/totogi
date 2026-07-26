@@ -1,0 +1,427 @@
+generated: '2026-07-25'
+method: derived
+source: https://docs.api.totogi.com/
+api: Totogi Charging as a Service (GraphQL)
+format: graphql-union-errors
+envelope:
+  style: errors-as-data
+  description: Every Totogi CaaS operation returns a result UNION whose members are either the success
+    payload or one of the typed error objects below. Errors are returned inside data with an HTTP 200
+    rather than in the GraphQL top-level errors array, so clients must inline-fragment on each error member
+    they intend to handle.
+  interface: Error
+  fields:
+  - name: errorCode
+    type: String!
+    description: Machine-readable error identifier.
+  - name: errorMessage
+    type: String
+    description: Human-readable error description.
+  note: Individual error types add typed context fields (for example RateLimitExceeded.retryAfter, InvalidField.fieldName,
+    AccountNotFound.accountId) so the failure is machine-actionable.
+counts:
+  error_types: 68
+  result_unions: 87
+universal_errors:
+- code: InternalServerError
+  used_in_result_unions: 86
+- code: RateLimitExceeded
+  used_in_result_unions: 70
+  note: Carries retryAfter (AWSDateTime) — the rate-limit backoff signal.
+- code: InvalidProviderLifecycleStage
+  used_in_result_unions: 52
+problems:
+- code: InternalServerError
+  title: An error type to be thrown if an internal error happened or the charge engine is not available.
+  used_in_result_unions: 86
+- code: RateLimitExceeded
+  title: An error type to be thrown if a provider crossed the rate limit and request will be rejected
+  used_in_result_unions: 70
+  context_fields:
+  - 'providerId: ID!'
+  - 'retryAfter: AWSDateTime!'
+- code: InvalidProviderLifecycleStage
+  title: An error type to be thrown if a provider's lifecycle state is not valid to execute the operation
+  used_in_result_unions: 52
+  context_fields:
+  - 'providerLifecycleStage: ProviderLifecycleStage!'
+- code: InvalidField
+  title: An error type to be thrown if a value of a field in an input fails a validation.
+  used_in_result_unions: 36
+  context_fields:
+  - 'fieldName: String!'
+- code: AccountNotFound
+  title: An error type to be thrown if an account was not found.
+  used_in_result_unions: 18
+  context_fields:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+- code: BalanceTypeNotFound
+  title: An error type to be thrown if a balance type was not found.
+  used_in_result_unions: 18
+  context_fields:
+  - 'providerId: ID!'
+  - 'balanceTypeId: ID!'
+- code: ProviderNotFound
+  title: An error type to be thrown if tenant was not found for given ID.
+  used_in_result_unions: 11
+  context_fields:
+  - 'providerId: ID!'
+- code: FeatureNotEnabled
+  title: An error type to be thrown if a feature is not enabled.
+  used_in_result_unions: 9
+  context_fields:
+  - 'providerId: ID!'
+  - 'featureName: String!'
+- code: PlanVersionNotFound
+  title: An error type to be thrown if a plan was not found.
+  used_in_result_unions: 9
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: PolicyCounterNotFound
+  title: Error type when a policy counter is not found.
+  used_in_result_unions: 9
+  context_fields:
+  - 'id: ID!'
+- code: BalanceTypeReferencesNotFound
+  title: An error type to be thrown if balance type references in expressions do not exist in the provider's
+    catalog.
+  used_in_result_unions: 6
+  context_fields:
+  - 'invalidReferences: [String!]!'
+- code: DeviceNotFound
+  title: An error type to be thrown if a device was not found.
+  used_in_result_unions: 5
+  context_fields:
+  - 'providerId: ID!'
+  - 'deviceId: ID!'
+- code: LifecycleNotFound
+  title: An error type to be thrown if a lifecycle defines an invalid state transition.
+  used_in_result_unions: 5
+  context_fields:
+  - 'id: ID!'
+- code: PlanNotFound
+  title: An error type to be thrown if a plan was not found.
+  used_in_result_unions: 5
+  context_fields:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+- code: TransactionHasBeenProcessed
+  title: An error type to be thrown if the transaction has been processed.
+  used_in_result_unions: 5
+  context_fields:
+  - 'providerId: ID!'
+  - 'transactionId: ID!'
+- code: BalanceTypeCounterNotFound
+  title: An error type to be thrown if Balance Type Counter was not found with the given inputs.
+  used_in_result_unions: 4
+  context_fields:
+  - 'balanceTypeCounterId: ID!'
+  - 'balanceTypeId: ID!'
+- code: QoSProfileNotFound
+  title: Error type for when a QoS Profile is not found.
+  used_in_result_unions: 4
+  context_fields:
+  - 'providerId: ID!'
+  - 'qosProfileId: ID!'
+- code: UserNotFound
+  title: An error type to be thrown if user was not found for given provider. This is returned whether
+    the user does not exist, or if the provider does not exist.
+  used_in_result_unions: 4
+  context_fields:
+  - 'providerId: ID!'
+  - 'userId: ID!'
+- code: AccountBalanceTypeCounterNotFound
+  title: An error type to be thrown if the Balance Type Counter was not found with the given inputs for
+    the account.
+  used_in_result_unions: 3
+  context_fields:
+  - 'balanceTypeCounterId: ID!'
+  - 'balanceTypeId: ID!'
+  - 'accountId: ID!'
+- code: ClientNotFound
+  title: An error type to be thrown if client was not found with the given inputs.
+  used_in_result_unions: 3
+  context_fields:
+  - 'providerId: ID!'
+  - 'clientId: ID!'
+- code: CreatePlanValidationFailed
+  title: An error type to be thrown if a plan cannot be created out of the provided input. DuplicateCounterName
+    - Two or more counters in a service have the same name. MissingCounterStates - One or more counter
+    has no states. At least one state is required. DuplicateCounterStateName - Two or more counter states
+    in a counter have the same name. MissingDefaultCounterState - A counter has no default state (a state
+    with no threshold). DuplicateCounterStateThreshold - Two or more states of a counter have the same
+    threshold. WrongCountryCodeExpression - The country code expression defines a non-restricting value
+    set. RoamingConfigOverlapping - The roaming configuration includes overlapping entries. A start (
+    ) includes all countries, having an entry with " " and one with "US" is overlapping "*" needs to be
+    replaced with "!US". LongDistanceConfigOverlapping - The long distance configuration includes overlapping
+    entries. A start ( ) includes all countries, having an entry with " " and one with "US" is overlapping
+    "*" needs to be replaced with "!US". TooManyEntries - The entry list for the roaming and long distance
+    configuration has too many entries. 10k entries is the maximum. PlanServiceAllowanceIsUnlimited -
+    If "periodAllowance" is not provided, the plan service is considered unlimited. "overage" is not needed.
+  used_in_result_unions: 3
+- code: FieldMappingNotFound
+  title: An error type to be thrown if a field mapping was not found.
+  used_in_result_unions: 3
+  context_fields:
+  - 'providerId: ID!'
+  - 'path: String!'
+- code: PlanVersionWrongTransition
+  title: An error type to be thrown if transition from one state to another is not possible.
+  used_in_result_unions: 3
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: ServiceFormatError
+  title: An error type to be thrown if a new version of a plan is created based on the old format while
+    a version with the new format exists.
+  used_in_result_unions: 3
+  context_fields:
+  - 'providerId: ID!'
+  - 'versionId: ID!'
+- code: SubscriptionNotFound
+  title: An error type to be thrown if a subscription for provided dates cannot be found. If "to" was
+    empty in input, it will be empty in error. If "from" was empty in input, it will be "now" in error.
+  used_in_result_unions: 3
+  context_fields:
+  - 'planSubscriptionId: ID!'
+- code: BalanceNotFound
+  title: An error type to be thrown if a balance was not found.
+  used_in_result_unions: 2
+  context_fields:
+  - 'providerId: ID!'
+  - 'balanceId: ID!'
+- code: BalanceTypeHasReferences
+  title: An error type to be thrown if the balance type is used in an active plan.
+  used_in_result_unions: 2
+  context_fields:
+  - 'balanceTypeId: ID!'
+- code: BalanceTypeNameInUse
+  title: An error type to be thrown if the BalanceType name is already in use.
+  used_in_result_unions: 2
+  context_fields:
+  - 'balanceTypeId: ID!'
+  - 'name: String!'
+- code: InvalidNumberOfStates
+  title: An error type to be thrown if a lifecycle doesn't define any states.
+  used_in_result_unions: 2
+- code: InvalidStateTransitions
+  title: An error type to be thrown if a lifecycle defines an invalid state transition.
+  used_in_result_unions: 2
+- code: PlanAliasNotActive
+  title: An error type to be thrown if a plan alias does not have an active version.
+  used_in_result_unions: 2
+  context_fields:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+- code: PlanAliasNotFound
+  title: An error type to be thrown if a plan alias was not found.
+  used_in_result_unions: 2
+  context_fields:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+- code: PlanAlreadyExists
+  title: An error type to be thrown if a plan with provided ID already exists.
+  used_in_result_unions: 2
+  context_fields:
+  - 'planId: ID!'
+- code: PlanVersionAlreadyExists
+  title: An error type to be thrown if a plan version already exists in a plan.
+  used_in_result_unions: 2
+  context_fields:
+  - 'plan: Plan!'
+  - 'planVersion: PlanVersionInterface!'
+- code: PlanVersionHasReferences
+  title: An error type to be thrown if a plan version has references preventing it from deletion.
+  used_in_result_unions: 2
+  context_fields:
+  - 'planVersion: PlanVersionInterface!'
+- code: PlanVersionIsNotAssignable
+  title: An error type to be thrown if a plan cannot be assigned.
+  used_in_result_unions: 2
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: PolicyCounterInUse
+  title: Error type when a policy counter cannot be deleted because it is in use.
+  used_in_result_unions: 2
+  context_fields:
+  - 'providerId: ID!'
+  - 'policyCounterId: ID!'
+  - 'referencingPlanVersions: [ID!]!'
+- code: PostpaidFieldInPrepaidAccount
+  title: An error type to be thrown when creating account if postpaid properties were not set when creditLimit
+    of account is positive.
+  used_in_result_unions: 2
+- code: SubscribeToPlanVersionValidationFailed
+  title: An error type to be thrown if a plan cannot be assigned or reassigned to provided dates.
+  used_in_result_unions: 2
+- code: UserIsReadOnly
+  title: An error type to be thrown if a user tries to update his/her own user record using the admin
+    API instead of the update user profile API, or if they try to delete their own user record
+  used_in_result_unions: 2
+- code: AccountAlreadyExists
+  title: An error type to be thrown if an account with provided ID already exists.
+  used_in_result_unions: 1
+  context_fields:
+  - 'accountId: ID!'
+- code: AccountHasReferences
+  title: An error type to be thrown if an account has references preventing it from deletion.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+- code: BalanceHasReferences
+  title: An error type to be thrown if the balance is used in an active account.
+  used_in_result_unions: 1
+  context_fields:
+  - 'balanceId: ID!'
+- code: CannotChangeAccountType
+  title: An error that is thrown when user tries to change a postpaid account into a prepaid one and vice
+    versa
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+- code: CannotSetLongFirstBillingCycle
+  title: An error that is thrown when user tries to set longFirstBillingCycle without changing DoM
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+- code: ChildLimitExceeded
+  title: An error type to be thrown when the account hierarchy exceeds the maximum allowed items for a
+    transaction.
+  used_in_result_unions: 1
+  context_fields:
+  - 'accountId: ID!'
+  - 'childCount: Int!'
+  - 'maxAllowed: Int!'
+- code: CircularReference
+  title: An error type to be thrown when a circular reference would be created in the account hierarchy.
+  used_in_result_unions: 1
+  context_fields:
+  - 'accountId: ID!'
+  - 'parentAccountId: ID!'
+- code: ClientCreationLimitExceeded
+  title: An error type to be thrown if the client creation limit exceeds the maximum allowed (10).
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'currentClientCount: Int!'
+  - 'maxClientLimit: Int!'
+- code: DayOfMonthAlreadySet
+  title: An error that is thrown when user tries to change DoM during the same cycle DoM was changed.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'accountId: ID!'
+  - 'billingDayOfMonth: Int!'
+  - 'newBillingDayOfMonth: Int!'
+  - 'longFirstBillingCycle: Boolean'
+  - 'newLongFirstBillingCycle: Boolean'
+- code: DeploymentVerificationFailed
+  title: An error type to be thrown if a plan failed verification on deployment.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: DeviceAlreadyExists
+  title: An error type to be thrown if a device with provided ID already exists.
+  used_in_result_unions: 1
+  context_fields:
+  - 'deviceId: ID!'
+- code: ExportAlreadyRunning
+  title: An error returned when an export is already in progress for the provider.
+  used_in_result_unions: 1
+- code: FieldMappingAlreadyExists
+  title: An error type to be thrown if a field mapping for provided path already exists.
+  used_in_result_unions: 1
+  context_fields:
+  - 'path: String!'
+- code: FieldMappingHasReferences
+  title: An error type to be thrown if a field mapping has references preventing it from deletion.
+  used_in_result_unions: 1
+  context_fields:
+  - 'fieldMapping: FieldMapping!'
+- code: InvalidExportTime
+  title: An error returned when the requested export time is invalid.
+  used_in_result_unions: 1
+- code: MigrationAlreadyInProgress
+  title: 'An error type to be thrown if there is already migration in progress for this plan. Important
+    : This type is deprecated. Use aliases for plan version migration instead. Deprecated date is 2026-02-16.
+    Expiration date is 2026-04-16.'
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: PlanIsReadOnly
+  title: An error type to be thrown if the plan is the initial one preventing it from deletion.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'planId: ID!'
+- code: PlanServiceValidationFailed
+  title: An error type to be thrown if the PlanService cannot be created out of the provided input. RateBalanceNotAllowedInUnlimitedService
+    - UnlimitedPlanService cannot use rate balance type.
+  used_in_result_unions: 1
+- code: PlanVersionIsReadOnly
+  title: An error type to be thrown if a plan version is read only. For example, when the version is already
+    deployed.
+  used_in_result_unions: 1
+  context_fields:
+  - 'planVersion: PlanVersionInterface!'
+- code: PlanVersionUpdateAlreadyInProgress
+  title: An error type to be the plan version update is in progress.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'planVersionId: ID!'
+- code: PostpaidPropertiesRequired
+  title: An error type to be thrown when creating account if postpaid properties were not set when creditLimit
+    of account is positive.
+  used_in_result_unions: 1
+- code: QoSProfileInUse
+  title: Error type for when a QoS Profile is still in use and cannot be deleted.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'qosProfileId: ID!'
+  - 'referencingPlanVersions: [ID!]!'
+- code: RarNotEnabled
+  title: An error type to be thrown when RAR is triggered for a provider with disabled RAR feature.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+- code: RatingGroupHierarchyHasReferences
+  title: An error type to be thrown if there is a rating group which is not provided in the input but
+    used by some plan.
+  used_in_result_unions: 1
+  context_fields:
+  - 'ratingGroup: [RatingGroup!]!'
+- code: RatingGroupValidationFailed
+  title: An error type to be thrown if rating group hierarchy validation failed.
+  used_in_result_unions: 1
+  context_fields:
+  - 'root: RatingGroup!'
+- code: UpdateArchivingPolicyFailed
+  title: An error type to be thrown if updating archive policy fails.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'archiveThreshold: Int'
+- code: UserAlreadyExists
+  title: An error type to be thrown if a user with the same email exists in the user pool. Provider ID
+    and user ID are not returned to not expose them in case user exists for a different provider
+  used_in_result_unions: 1
+  context_fields:
+  - 'email: AWSEmail!'
+- code: UserIncorrectStatus
+  title: An error type to be thrown if user was not verified yet. This is returned whether the user does
+    not exist, or if the provider does not exist.
+  used_in_result_unions: 1
+  context_fields:
+  - 'providerId: ID!'
+  - 'userId: ID!'
+  - 'state: String!'

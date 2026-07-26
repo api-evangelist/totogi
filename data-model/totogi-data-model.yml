@@ -1,0 +1,188 @@
+generated: '2026-07-25'
+method: derived
+source: graphql/totogi-charging-as-a-service.graphql
+root:
+  tenant_key: providerId
+  note: providerId (the service provider / tenant) is the mandatory first argument on effectively every
+    operation and the partition key of the whole data model — Totogi CaaS is multi-tenant by construction,
+    and no object is addressable without its provider.
+counts:
+  object_types: 214
+  input_types: 124
+  enums: 38
+  unions: 87
+  core_entities_mapped: 15
+entities:
+- entity: Account
+  description: An account to manage multiple devices.
+  field_count: 18
+  tenant_scoped: true
+  relationships:
+  - field: parent
+    target: Account
+    cardinality: has_one
+  - field: inactivePlanVersions
+    target: SubscribedPlanVersion
+    cardinality: has_many
+  - field: activePlanVersions
+    target: SubscribedPlanVersion
+    cardinality: has_many
+  - field: archivedPlanVersions
+    target: SubscribedPlanVersion
+    cardinality: has_many
+  - field: balances
+    target: AccountBalanceInfo
+    cardinality: has_many
+  - field: postpaid
+    target: AccountPostpaidProperties
+    cardinality: has_one
+  - field: accountLifecycle
+    target: AccountLifecycle
+    cardinality: has_one
+  - field: policyCounters
+    target: AccountPolicyCounterState
+    cardinality: has_many
+- entity: Device
+  description: The smallest unit in the Charging Engine which represents an end user and belongs to an
+    account.
+  field_count: 5
+  tenant_scoped: true
+  relationships:
+  - field: account
+    target: Account
+    cardinality: has_one
+- entity: Plan
+  description: An object to represent a set of plan services that contains all the information to perform
+    charging / crediting operations.
+  field_count: 4
+  tenant_scoped: true
+  relationships:
+  - field: alias
+    target: Alias
+    cardinality: has_many
+- entity: PlanVersion
+  description: Versioned part of the planVersion.
+  field_count: 18
+  tenant_scoped: true
+  relationships:
+  - field: basedOn
+    target: PlanVersion
+    cardinality: has_one
+  - field: plan
+    target: Plan
+    cardinality: has_one
+  - field: counters
+    target: Counter
+    cardinality: has_many
+  - field: policies
+    target: Policy
+    cardinality: has_many
+  - field: policyCounters
+    target: PolicyCounter
+    cardinality: has_many
+- entity: SubscribedPlanVersion
+  description: An instance of a plan version that belongs to an account.
+  field_count: 8
+  tenant_scoped: false
+  relationships:
+  - field: planVersion
+    target: PlanVersionInterface
+    cardinality: has_one
+  - field: overrides
+    target: KeyValue
+    cardinality: has_many
+  - field: override
+    target: PlanVersionOverride
+    cardinality: has_one
+- entity: AccountBalanceInfo
+  description: Balance details return type.
+  field_count: 15
+  tenant_scoped: false
+  relationships:
+  - field: balanceType
+    target: BalanceTypePayload
+    cardinality: has_one
+  - field: counters
+    target: BalanceTypeCounterPayload
+    cardinality: has_many
+- entity: Lifecycle
+  description: ''
+  field_count: 5
+  tenant_scoped: true
+  relationships:
+  - field: states
+    target: LifecycleState
+    cardinality: has_many
+- entity: AccountLifecycle
+  description: Information about the Account’s assigned Lifecycle.
+  field_count: 5
+  tenant_scoped: false
+  relationships:
+  - field: lifecycle
+    target: Lifecycle
+    cardinality: has_one
+- entity: PolicyCounter
+  description: Policy counter configuration for account-level notifications and policies.
+  field_count: 6
+  tenant_scoped: false
+  relationships:
+  - field: states
+    target: PolicyCounterState
+    cardinality: has_many
+- entity: QoSProfile
+  description: QoS Profile for PCF policy negotiation.
+  field_count: 8
+  tenant_scoped: true
+  relationships:
+  - field: qos
+    target: QoS
+    cardinality: has_one
+  - field: ambr
+    target: Ambr
+    cardinality: has_one
+- entity: EventDataRecord
+  description: Represents an event in the Charging Engine.
+  field_count: 7
+  tenant_scoped: true
+  relationships: []
+- entity: FieldMapping
+  description: Field mapping.
+  field_count: 2
+  tenant_scoped: false
+  relationships: []
+- entity: RatingGroup
+  description: Rating group.
+  field_count: 15
+  tenant_scoped: true
+  relationships:
+  - field: announcementMapping
+    target: AnnouncementMapping
+    cardinality: has_one
+  - field: finalUnitHandling
+    target: FinalUnitHandling
+    cardinality: has_one
+  - field: children
+    target: RatingGroup
+    cardinality: has_many
+- entity: ProviderConfig
+  description: Configurations of a tenant.
+  field_count: 30
+  tenant_scoped: false
+  relationships:
+  - field: limits
+    target: ApiLimitsConfig
+    cardinality: has_many
+  - field: exportConfig
+    target: ExportConfig
+    cardinality: has_one
+  - field: customAccountProperties
+    target: CustomProperty
+    cardinality: has_many
+  - field: customDeviceProperties
+    target: CustomProperty
+    cardinality: has_many
+- entity: ClientCredentials
+  description: ''
+  field_count: 5
+  tenant_scoped: true
+  relationships: []

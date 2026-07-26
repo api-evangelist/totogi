@@ -1,0 +1,52 @@
+generated: '2026-07-25'
+method: searched
+source: https://docs.whoosh.totogi.solutions/monitor_message_status
+spec_type: none
+asyncapi_published: false
+note: >-
+  Totogi publishes no AsyncAPI document on any host. It does publish exactly one real event
+  surface: the Whoosh StatusCallback delivery webhook, documented with its trigger statuses and
+  its full callback payload. That catalog is captured here verbatim and wired as type Webhooks.
+  Charging-as-a-Service has NO event surface in its public reference — the GraphQL schema
+  declares no Subscription root type, no webhook registration operation and no callback URL
+  field, so events are recorded as absent rather than invented.
+webhooks:
+- name: StatusCallback
+  api: Whoosh Programmable Messaging API
+  direction: outbound
+  transport: https
+  method: POST
+  content_type: application/x-www-form-urlencoded
+  subscription_mechanism: >-
+    Per-message. The caller passes a StatusCallback URL as a parameter on the send-message call;
+    there is no separate subscription or registration endpoint.
+  registered_on: POST https://api.whoosh.totogi.solutions/2010-04-01/Accounts/{AccountSid}/Messages.json
+  description: >-
+    Whoosh POSTs to the caller-supplied StatusCallback URL each time the status of a message
+    changes.
+  events:
+  - {status: queued}
+  - {status: failed}
+  - {status: sent}
+  - {status: delivered}
+  - {status: undelivered}
+  payload_fields:
+  - {name: SmsSid, type: string, example_shape: 'SM…34 chars'}
+  - {name: SmsStatus, type: string}
+  - {name: MessageStatus, type: string}
+  - {name: To, type: string, format: E.164}
+  - {name: MessageSid, type: string, example_shape: 'SM…34 chars'}
+  - {name: AccountSid, type: string, example_shape: 'AC…34 chars'}
+  - {name: From, type: string, format: E.164}
+  - {name: ApiVersion, type: string, value: '2010-04-01'}
+  security: >-
+    No signing scheme, shared secret or verification header is documented for the callback.
+  docs: https://docs.whoosh.totogi.solutions/monitor_message_status
+surfaces_checked:
+- {surface: 'GraphQL Subscription root type', url: 'https://docs.api.totogi.com/', result: 'not present'}
+- {surface: '/asyncapi.yaml and /asyncapi.json', hosts: [api.whoosh.totogi.solutions, docs.whoosh.totogi.solutions, totogi.com], result: '404'}
+- {surface: 'GitHub org github.com/totogi', result: 'no AsyncAPI document in any of the 12 public repos'}
+- surface: Totogi notifications service (github.com/totogi/totogi-notifications)
+  result: >-
+    Real internal notification pipeline for the Totogi Emulator (DynamoDB + Lambda), but it
+    publishes no event schema and no public subscription endpoint.

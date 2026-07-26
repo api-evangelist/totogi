@@ -1,0 +1,48 @@
+generated: '2026-07-25'
+method: searched
+source: https://www.totogi.com/how-to-guides/build-a-charging-emulator-demo-app-using-totogi-apis/
+self_serve: false
+note: >-
+  Totogi publishes NO self-serve sandbox, no test-vs-live key separation, no magic test
+  identifiers and no test credentials of any kind. There is exactly one public test surface —
+  the Totogi Charging Emulator, a hosted demo app Totogi built on its own APIs and published a
+  build guide for. It is a demonstration of the API, not a sandbox a developer can obtain keys
+  for. Nothing below is invented; every value is a published URL or a published statement.
+environments:
+- name: Totogi Charging Emulator
+  url: https://emulator.totogidemos.com
+  status: live
+  http_status: 200
+  title: Totogi Charging Emulator
+  description: >-
+    A hosted front end that drives real Totogi charging traffic — it obtains an OAuth 2.0 token,
+    calls the Account Management GraphQL API to provision subscribers and devices, then issues
+    3GPP TS 32.291 Nchf_ConvergedCharging requests to create account charges.
+  build_guide: https://www.totogi.com/how-to-guides/build-a-charging-emulator-demo-app-using-totogi-apis/
+  supporting_repos:
+  - {repo: 'https://github.com/totogi/totogi-charging-proxy', role: 'HTTP/2 proxy that forwards browser-originated charging requests to the Nchf endpoints'}
+  - {repo: 'https://github.com/totogi/totogi-notifications', role: 'Serverless pipeline that processes, stores and serves Totogi notifications for the emulator'}
+  credentials: >-
+    Not published. The guide states only that "Access to Totogi APIs is limited to authorized
+    OAuth 2.0 tokens" — the tokens themselves are arranged with Totogi.
+- name: Whoosh console
+  url: https://console.whoosh.totogi.solutions
+  status: login-only
+  description: >-
+    Issues the Account SID and Auth Token pair used to authenticate against the Whoosh messaging
+    API. Login only — there is no self-serve signup and no trial account path.
+test_values:
+  published: false
+  note: >-
+    No test card numbers, test MSISDNs, magic identifiers, test SIDs or fixture triggers are
+    published for either Whoosh or Charging-as-a-Service. The example phone numbers in the Whoosh
+    quickstart (+15017122661 / +15558675310) are Twilio's documentation examples carried over
+    verbatim with the rest of the Twilio-compatible docs and are NOT Whoosh test numbers.
+test_clocks:
+  supported: false
+gaps:
+- No sandbox or test mode is offered on any Totogi API.
+- No self-serve signup exists for any Totogi product; every path is "Book A Demo".
+- >-
+  The GraphQL reference at docs.api.totogi.com is fully public but the endpoints behind it are
+  unreachable without a tenant credential, so the published schema cannot be exercised.
