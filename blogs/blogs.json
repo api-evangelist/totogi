@@ -1,0 +1,21 @@
+{
+  "repo": "totogi",
+  "feeds": [
+    {
+      "source": "https://totogi.com/company/faqs/",
+      "feed_url": "https://totogi.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
+      "source": "https://totogi.com/blog/",
+      "feed_url": "https://totogi.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-01T15:49:00Z"
+}
