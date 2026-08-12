@@ -139,6 +139,8 @@ apis:
   - type: Announcement
     url: https://totogi.com/newsroom/press-releases/replacement-for-twilio-a2p-apis-for-network-operators/
 common:
+- type: MCPServer
+  url: mcp/totogi-mcp.yml
 - type: Website
   url: https://totogi.com
 - type: About
