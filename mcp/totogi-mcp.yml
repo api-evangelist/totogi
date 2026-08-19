@@ -1195,3 +1195,9 @@ tools:
   authorized_roles:
   - All
   mutating: true
+deployment:
+  mode: none
+  verified: derived
+  tools: 93
+  checked: '2026-08-12'
+  source: catalog MCP census
