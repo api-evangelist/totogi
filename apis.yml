@@ -116,6 +116,12 @@ apis:
   - SMS
   - A2P
   - CPaaS
+  - Webhook
+  tags_raw:
+  - Messaging
+  - SMS
+  - A2P
+  - CPaaS
   - Webhooks
   properties:
   - type: Documentation
