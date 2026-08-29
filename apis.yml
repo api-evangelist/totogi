@@ -23,6 +23,17 @@ description: >-
   Platinum Open API Conformance Certification for 31 certified Open APIs and once ranked #1 on
   the TM Forum Open API Certification Leaderboard. No CAMARA, GSMA Open Gateway, or Aduna
   reference appears anywhere in Totogi's own canonical AI index.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Telecommunications
